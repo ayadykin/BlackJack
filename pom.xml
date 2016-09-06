@@ -1,39 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>LI</artifactId>
 	<groupId>com.ayadykin</groupId>
-	<version>1.0-SNAPSHOT</version>
+	<artifactId>BlackJack</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>LI</name>
+	<properties>
+		<version.glassfish>4.0</version.glassfish>
+		<version.javaee>7.0</version.javaee>
+		<version.jersey>2.3.1</version.jersey>
+		<version.json>1.0.2</version.json>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.glassfish.main.extras</groupId>
+			<artifactId>glassfish-embedded-all</artifactId>
+			<version>${version.glassfish}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>2.6.0-M3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.owlike</groupId>
+			<artifactId>genson</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.jersey-test-framework</groupId>
+			<artifactId>jersey-test-framework-core</artifactId>
+			<version>1.9</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.jersey-test-framework</groupId>
+			<artifactId>jersey-test-framework-external</artifactId>
+			<version>1.9</version>
+		</dependency>
+	</dependencies>
 
 	<build>
+		<finalName>BlackJack</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
+				<version>2.3</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.glassfish.maven.plugin</groupId>
+				<artifactId>maven-glassfish-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<glassfishDirectory>D:\glassfish4\glassfish</glassfishDirectory>
+					<user>admin</user>
+					<passwordFile>D:\glassfish4\glassfish\domains\domain1\config\domain-passwords</passwordFile>
+					<domain>
+						<name>domain1</name>
+						<httpPort>8080</httpPort>
+						<adminPort>4848</adminPort>
+					</domain>
+					<components>
+						<component>
+							<name>BlackJack</name>
+							<artifact>target/BlackJack.war</artifact>
+						</component>
+					</components>
+					<debug>true</debug>
+					<terse>false</terse>
+					<echo>true</echo>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+
 </project>
