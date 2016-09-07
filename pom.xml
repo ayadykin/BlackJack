@@ -15,39 +15,30 @@
 	</properties>
 
 	<dependencies>
+
 		<dependency>
-			<groupId>org.glassfish.main.extras</groupId>
-			<artifactId>glassfish-embedded-all</artifactId>
-			<version>${version.glassfish}</version>
-			<scope>provided</scope>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>${version.javaee}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>eclipselink</artifactId>
-			<version>2.6.0-M3</version>
-		</dependency>
+
 
 		<dependency>
 			<groupId>com.owlike</groupId>
 			<artifactId>genson</artifactId>
-			<version>1.3</version>
+			<version>1.4</version>
 		</dependency>
+
+
+		<!--dependency> <groupId>org.eclipse.persistence</groupId> <artifactId>eclipselink</artifactId> 
+			<version>2.6.3</version> </dependency -->
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey.jersey-test-framework</groupId>
-			<artifactId>jersey-test-framework-core</artifactId>
-			<version>1.9</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey.jersey-test-framework</groupId>
-			<artifactId>jersey-test-framework-external</artifactId>
-			<version>1.9</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -77,9 +68,9 @@
 				<artifactId>maven-glassfish-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<glassfishDirectory>D:\glassfish4\glassfish</glassfishDirectory>
+					<glassfishDirectory>C:\glassfish4\glassfish</glassfishDirectory>
 					<user>admin</user>
-					<passwordFile>D:\glassfish4\glassfish\domains\domain1\config\domain-passwords</passwordFile>
+					<passwordFile>C:\glassfish4\glassfish\domains\domain1\config\domain-passwords</passwordFile>
 					<domain>
 						<name>domain1</name>
 						<httpPort>8080</httpPort>

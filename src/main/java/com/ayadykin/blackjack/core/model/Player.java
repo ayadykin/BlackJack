@@ -13,7 +13,6 @@ public class Player {
     private double cash;
     private List<Card> cards = new ArrayList<>();
     private int points;
-    private boolean diler = false;
     
     public Player(){
     	
@@ -21,10 +20,6 @@ public class Player {
     public Player(long id, double cash) {
         this.cash = cash;
         this.id = id;
-    }
-
-    public Player(boolean diler) {
-        this.diler = diler;
     }
 
     public boolean addCard(Card card) {
@@ -54,15 +49,11 @@ public class Player {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
-
-    public boolean isDiler() {
-        return diler;
+    
+    public void clearPoints() {
+         points = 0;
     }
-
-    public void setDiler(boolean diler) {
-        this.diler = diler;
-    }
-
+    
     public int getPoints() {
         return points;
     }

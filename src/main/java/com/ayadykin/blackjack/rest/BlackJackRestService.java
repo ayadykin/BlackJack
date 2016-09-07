@@ -30,16 +30,16 @@ public class BlackJackRestService {
 
     @GET
     public Response init() throws BlackJackException {
-        return Response.ok(gameService.initGame(0l)).build();
+        return Response.ok(gameService.initGame(0)).build();
     }
     
     @GET
     @Path("/{id}")
-    public Response init(@PathParam("id") long id) throws BlackJackException {
+    public Response init(@PathParam("id") int id) throws BlackJackException {
         return Response.ok(gameService.initGame(id)).build();
     }
 
-    @PUT
+    /*@PUT
     public Response setBet(BetDto bet) {
         return Response.ok(gameService.setBet(bet.getBet())).build();
     }
@@ -47,6 +47,6 @@ public class BlackJackRestService {
     @POST
     public Response action(PlayerActionDto playerActionDto) throws BlackJackException {
         return Response.ok(gameService.action(playerActionDto)).build();
-    }
+    }*/
 
 }

@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import com.ayadykin.blackjack.core.model.Card;
 import com.ayadykin.blackjack.core.model.CardDeck;
+import com.ayadykin.blackjack.core.model.Dealer;
 import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
@@ -17,8 +18,8 @@ import com.ayadykin.blackjack.exceptions.BlackJackException;
  */
 @Named
 @SessionScoped
-public class Table implements Serializable {
-
+public class Table implements Serializable {    
+    
     private double bank = 0;
     private List<Player> players = new ArrayList<>();
     private CardDeck cardDeck = new CardDeck();
@@ -29,7 +30,7 @@ public class Table implements Serializable {
 
     public void init(long id, double cash) {
         players.add(new Player(id, cash));
-        players.add(new Player(true));
+        players.add(new Dealer());
     }
 
     public void resetGame() {
@@ -37,6 +38,7 @@ public class Table implements Serializable {
         cardDeck = new CardDeck();
         for (Player player : players) {
             player.getCards().clear();
+            player.clearPoints();
         }
     }
 
@@ -62,7 +64,7 @@ public class Table implements Serializable {
 
     public Player getDealer() throws BlackJackException {
         for (Player player : players) {
-            if (player.isDiler()) {
+            if (player instanceof Dealer) {
                 return player;
             }
         }
@@ -71,7 +73,7 @@ public class Table implements Serializable {
 
     public Player getPlayer() throws BlackJackException {
         for (Player player : players) {
-            if (!player.isDiler()) {
+            if (!(player instanceof Dealer)) {
                 return player;
             }
         }

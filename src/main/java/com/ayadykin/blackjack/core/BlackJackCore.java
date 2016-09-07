@@ -1,12 +1,16 @@
 package com.ayadykin.blackjack.core;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.List;
 
 import javax.ejb.Stateless;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
+import com.ayadykin.blackjack.core.deal.impl.BlackJackDealStrategy;
 import com.ayadykin.blackjack.core.model.Card;
 import com.ayadykin.blackjack.core.model.CardDeck;
+import com.ayadykin.blackjack.core.model.Dealer;
 import com.ayadykin.blackjack.core.model.Player;
 
 /**
@@ -14,28 +18,16 @@ import com.ayadykin.blackjack.core.model.Player;
  */
 @Stateless
 public class BlackJackCore {
-
-    private static final int DEAL_CARDS = 2;
+    
     private static final int BLACK_JACK = 21;
 
-    public void dealCards(List<Player> players, CardDeck cardDeck) {
-        for (Player player : players) {
-            for (int i = 0; i < BlackJackCore.DEAL_CARDS; i++) {
-                Card card = cardDeck.getCard().setHidden(false);
-                if (player.isDiler() && i == 1) {
-                    card.setHidden(true);
-                }
-                player.addCard(card);
-            }
-        }
-    }
 
     public BlackJackResponce checkBlackJack(List<Player> players) {
 
         boolean blackJack = false;
         // Count points and check black jack
         for (Player player : players) {
-            if (player.isDiler() && blackJack) {
+            if (player instanceof Dealer && blackJack) {
                 dealerOpenHiddenCard(player);
                 return BlackJackResponce.BLACK_JACK;
             }
@@ -46,10 +38,8 @@ public class BlackJackCore {
         return BlackJackResponce.NEXT_MOVE;
     }
 
-    public BlackJackResponce playerGetCard(Player player, Card card) {
-        card.setHidden(false);
+    public BlackJackResponce checkPlayerStep(Player player) {
 
-        player.getCards().add(card);
         if (isBust(player)) {
             return BlackJackResponce.LOSE;
         }
