@@ -7,9 +7,10 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import com.ayadykin.blackjack.core.model.Card;
-import com.ayadykin.blackjack.core.model.CardDeck;
+import com.ayadykin.blackjack.core.cards.Card;
+import com.ayadykin.blackjack.core.cards.CardDeck;
 import com.ayadykin.blackjack.core.model.Dealer;
+import com.ayadykin.blackjack.core.model.Person;
 import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
@@ -18,66 +19,57 @@ import com.ayadykin.blackjack.exceptions.BlackJackException;
  */
 @Named
 @SessionScoped
-public class Table implements Serializable {    
-    
-    private double bank = 0;
-    private List<Player> players = new ArrayList<>();
-    private CardDeck cardDeck = new CardDeck();
+public class Table implements Serializable {
 
-    public Table() {
+	private double bank = 0;
+	private List<Person> players = new ArrayList<>();
+	private CardDeck cardDeck = new CardDeck();
 
-    }
+	public Table() {
 
-    public void init(long id, double cash) {
-        players.add(new Player(id, cash));
-        players.add(new Dealer());
-    }
+	}
 
-    public void resetGame() {
-        bank = 0;
-        cardDeck = new CardDeck();
-        for (Player player : players) {
-            player.getCards().clear();
-            player.clearPoints();
-        }
-    }
+	public void init(long id, double cash) {
+		players.add(new Dealer());
+		players.add(new Player(id, cash));
+	}
 
-    public void setBet(double bet) {
-        bank += bet;
-    }
+	public void resetGame() {
+		bank = 0;
+		cardDeck = new CardDeck();
+		for (Person player : players) {
+			player.getCards().clear();
+			player.setPoints(0);
+		}
+	}
 
-    public double getBet() {
-        return bank;
-    }
+	public void setBet(double bet) {
+		bank += bet;
+	}
 
-    public CardDeck getCardDeck() {
-        return cardDeck;
-    }
-    
-    public Card getCard() {
-        return cardDeck.getCard();
-    }
-    
-    public List<Player> getPlayers() {
-        return players;
-    }
+	public double getBet() {
+		return bank;
+	}
 
-    public Player getDealer() throws BlackJackException {
-        for (Player player : players) {
-            if (player instanceof Dealer) {
-                return player;
-            }
-        }
-        throw new BlackJackException("No dealer");
-    }
+	public CardDeck getCardDeck() {
+		return cardDeck;
+	}
 
-    public Player getPlayer() throws BlackJackException {
-        for (Player player : players) {
-            if (!(player instanceof Dealer)) {
-                return player;
-            }
-        }
-        throw new BlackJackException("No player");
-    }
+	public Card getCard() {
+		return cardDeck.getCard().setHidden(false);
+	}
+
+	public List<Person> getPlayers() {
+		return players;
+	}
+
+	public Dealer getDealer() {
+		return (Dealer) players.get(0);
+	}
+
+	public Player getPlayer() throws BlackJackException {
+		return (Player) players.get(1);
+		//throw new BlackJackException("No player");
+	}
 
 }

@@ -1,108 +1,109 @@
 package com.ayadykin.blackjack.core;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
-import java.util.List;
-
 import javax.ejb.Stateless;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
-import com.ayadykin.blackjack.core.deal.impl.BlackJackDealStrategy;
-import com.ayadykin.blackjack.core.model.Card;
-import com.ayadykin.blackjack.core.model.CardDeck;
+import com.ayadykin.blackjack.core.cards.Card;
 import com.ayadykin.blackjack.core.model.Dealer;
 import com.ayadykin.blackjack.core.model.Player;
+import com.ayadykin.blackjack.core.model.Person;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016.
  */
 @Stateless
 public class BlackJackCore {
-    
-    private static final int BLACK_JACK = 21;
 
+	private static final int BLACK_JACK = 21;
 
-    public BlackJackResponce checkBlackJack(List<Player> players) {
+	public BlackJackResponce checkBlackJack(Table table) {
 
-        boolean blackJack = false;
-        // Count points and check black jack
-        for (Player player : players) {
-            if (player instanceof Dealer && blackJack) {
-                dealerOpenHiddenCard(player);
-                return BlackJackResponce.BLACK_JACK;
-            }
-            if (isBlackJack(player)) {
-                blackJack = true;
-            }
-        }
-        return BlackJackResponce.NEXT_MOVE;
-    }
+		Player player = table.getPlayer();
+		Dealer dealer = table.getDealer();
+		if (isBlackJack(player)) {
+			dealerOpenHiddenCard(dealer);
+			if (isBlackJack(dealer)) {
+				return BlackJackResponce.PUSH;
+			} else {
+				return BlackJackResponce.BLACK_JACK;
+			}
+		}
+		return BlackJackResponce.NEXT_MOVE;
 
-    public BlackJackResponce checkPlayerStep(Player player) {
+	}
 
-        if (isBust(player)) {
-            return BlackJackResponce.LOSE;
-        }
+	public BlackJackResponce playerHit(Table table) {
+		Player player = table.getPlayer();
+		player.addCard(table.getCard());
 
-        return BlackJackResponce.NEXT_MOVE;
-    }
+		if (isBust(player)) {
+			return BlackJackResponce.LOSE;
+		}
 
-    public BlackJackResponce dealerStep(Player player, Card card) {
+		return BlackJackResponce.NEXT_MOVE;
+	}
 
-        card.setHidden(false);
+	public BlackJackResponce dealerStep(Table table) {
+		Dealer dealer = table.getDealer();
 
-        dealerOpenHiddenCard(player);
+		dealerOpenHiddenCard(dealer);
 
-        int points = countPoints(player);
-        while (points < 17) {
-            player.getCards().add(card);
-            points = countPoints(player);
-        }
-        if (isBust(player)) {
-            return BlackJackResponce.WIN;
-        }
+		int points = countPoints(dealer);
+		dealer.setPoints(points);
+		while (points < 17) {
+			Card card = table.getCard();
+			dealer.getCards().add(card);
+			points = countPoints(dealer);
+			dealer.setPoints(points);
+		}
+		if (isBust(dealer)) {
+			return BlackJackResponce.WIN;
+		}
 
-        return BlackJackResponce.DEALER_STAND;
-    }
+		return getGameResult(table);
+	}
 
-    private void dealerOpenHiddenCard(Player player) {
-        player.getCards().get(1).setHidden(false);
-        countPoints(player);
-    }
+	private void dealerOpenHiddenCard(Dealer dealer) {
+		dealer.getCards().get(1).setHidden(false);
+		int points = countPoints(dealer);
+		dealer.setPoints(points);
+	}
 
-    public BlackJackResponce getGameResult(int playerPoints, int dealerPoints) {
-        if (playerPoints == dealerPoints) {
-            return BlackJackResponce.PUSH;
-        } else if (playerPoints > dealerPoints) {
-            return BlackJackResponce.WIN;
-        } else {
-            return BlackJackResponce.LOSE;
-        }
-    }
+	private BlackJackResponce getGameResult(Table table) {
+		int dealerPoints = table.getDealer().getPoints();
+		int playerPoints = table.getPlayer().getPoints();
 
-    private int countPoints(Player player) {
-        int points = 0;
-        for (Card card : player.getCards()) {
-            points += card.getNominal().getPoints();
-        }
-        player.setPoints(points);
-        System.out.println(points);
-        return points;
-    }
+		if (playerPoints == dealerPoints) {
+			return BlackJackResponce.PUSH;
+		} else if (playerPoints > dealerPoints) {
+			return BlackJackResponce.WIN;
+		} else {
+			return BlackJackResponce.LOSE;
+		}
+	}
 
-    private boolean isBlackJack(Player player) {
-        int points = countPoints(player);
-        if (points == BLACK_JACK) {
-            return true;
-        }
-        return false;
-    }
+	private int countPoints(Person player) {
+		int points = 0;
+		for (Card card : player.getCards()) {
+			points += card.getNominal().getPoints();
+		}
+		System.out.println(points);
+		return points;
+	}
 
-    private boolean isBust(Player player) {
-        int points = countPoints(player);
-        if (points > BLACK_JACK) {
-            return true;
-        }
-        return false;
-    }
+	private boolean isBlackJack(Person player) {
+		int points = countPoints(player);
+		if (points == BLACK_JACK) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isBust(Person player) {
+		int points = countPoints(player);
+		if (points > BLACK_JACK) {
+			return true;
+		}
+		return false;
+	}
 }

@@ -13,9 +13,9 @@ import com.ayadykin.blackjack.actions.GameStatus;
 import com.ayadykin.blackjack.core.BlackJackCore;
 import com.ayadykin.blackjack.core.GameFlow;
 import com.ayadykin.blackjack.core.Table;
+import com.ayadykin.blackjack.core.cards.Card;
+import com.ayadykin.blackjack.core.cards.CardDeck;
 import com.ayadykin.blackjack.core.deal.DealCards;
-import com.ayadykin.blackjack.core.model.Card;
-import com.ayadykin.blackjack.core.model.CardDeck;
 import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 import com.ayadykin.blackjack.rest.dto.ResponseDto;
@@ -45,47 +45,32 @@ public class GameServiceImpl implements GameService {
 
         GameStatus gameAction = gameFlow.getGameStatus();
 
-        List<Player> players = table.getPlayers();
-        CardDeck cardDeck = table.getCardDeck();
+        //List<Player> players = table.getPlayers();
         BlackJackResponce blackJackResponce = null;
 
         switch (id) {
-
-        case 1:
-            // Init
+        case 0 :
+        	// Init
             table.init(id, 10);
-
-            blackJackDealStrategy.dealCards(players, cardDeck);
-
-            blackJackResponce = blackJackCore.checkBlackJack(players);
-            checkResponse(blackJackResponce, table.getPlayer());
-
+        	break;
+        case 1:   
+            blackJackDealStrategy.dealCards(table.getPlayers(),table.getCardDeck());
+            blackJackResponce = blackJackCore.checkBlackJack(table);
             gameFlow.setGameStatus(GameStatus.START);
             break;
         case 2:
             // HIT
-            if (gameFlow.getGameStatus().equals(GameStatus.END)) {
+            if (!gameFlow.getGameStatus().equals(GameStatus.START)) {
                 throw new BlackJackException("Error game is over");
-            }
-            Player player = table.getPlayer();
-            
-            Card card = table.getCard();
-            card.setHidden(false);
-            player.addCard(card);
-            
-            blackJackResponce = blackJackCore.checkPlayerStep(player);
-            checkResponse(blackJackResponce, player);
-
+            }           
+            blackJackResponce = blackJackCore.playerHit(table);
+            gameResult(blackJackResponce);
             break;
         case 3:
             // Stand
-            player = table.getPlayer();
-            card = table.getCard();
-
-            Player dealer = table.getDealer();
-            blackJackResponce = blackJackCore.dealerStep(dealer, card);
-            blackJackResponce = checkResponse(blackJackResponce, player);
-
+            blackJackResponce = blackJackCore.dealerStep(table);
+            gameResult(blackJackResponce);
+            gameFlow.setGameStatus(GameStatus.END);
             break;
         }
 
@@ -93,31 +78,16 @@ public class GameServiceImpl implements GameService {
             table.resetGame();
         }
 
-        return new ResponseDto(players, blackJackResponce);
+        return new ResponseDto(table.getPlayers(), blackJackResponce);
     }
 
-    private BlackJackResponce checkResponse(BlackJackResponce blackJackResponce, Player player) throws BlackJackException {
-        if (blackJackResponce.equals(BlackJackResponce.DEALER_STAND)) {
-            blackJackResponce = getGameResultByPoints();
-        }
-        if (!blackJackResponce.equals(BlackJackResponce.NEXT_MOVE)) {
-            finishGame(blackJackResponce, player);
-        }
-
-        return blackJackResponce;
-    }
-
-    private BlackJackResponce getGameResultByPoints() throws BlackJackException {
-        Player dealer = table.getDealer();
-        Player player = table.getPlayer();
-        return blackJackCore.getGameResult(player.getPoints(), dealer.getPoints());
-    }
-
-    private void finishGame(BlackJackResponce blackJackResponce, Player player) {
+    private void gameResult(BlackJackResponce blackJackResponce) {
 
         double bet = table.getBet();
 
         switch (blackJackResponce) {
+        case PUSH:
+        	break;
         case LOSE:
             bet = -bet;
             break;
@@ -133,7 +103,6 @@ public class GameServiceImpl implements GameService {
 
         // Account account = accountService.updateAccount(player.getId(), bet);
         // player.setCash(account.getAccount());
-        gameFlow.setGameStatus(GameStatus.END);
     }
 
     @Remove

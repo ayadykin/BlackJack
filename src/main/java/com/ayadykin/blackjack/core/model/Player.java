@@ -3,11 +3,13 @@ package com.ayadykin.blackjack.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ayadykin.blackjack.core.cards.Card;
+
 /**
  * Created by Andrey Yadykin on 22.02.2016 ð.
  */
 
-public class Player {
+public class Player implements Person{
 
     private long id;
     private double cash;
@@ -42,6 +44,7 @@ public class Player {
         this.cash = cash;
     }
 
+    @Override
     public List<Card> getCards() {
         return cards;
     }

@@ -1,10 +1,10 @@
-package com.ayadykin.blackjack.core.model;
+package com.ayadykin.blackjack.core.cards;
 
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.ayadykin.blackjack.core.model.Card.CardSuit;
-import com.ayadykin.blackjack.core.model.Card.Nominal;
+import com.ayadykin.blackjack.core.cards.Card.CardSuit;
+import com.ayadykin.blackjack.core.cards.Card.Nominal;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016.

@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.core.model;
+package com.ayadykin.blackjack.core.cards;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016 ð.
@@ -10,7 +10,7 @@ public class Card {
     };
 
     public enum Nominal {
-        ACE(10), KING(10), QUEEN(10), KNAVE(10), NINE(9), EIGHT(8), SEVEN(7), SIX(6), FIVE(5), FOUR(4), THREE(3), TWO(2), HIDDEN(0);
+        ACE(10), KING(10), QUEEN(10), KNAVE(10), TEN(10), NINE(9), EIGHT(8), SEVEN(7), SIX(6), FIVE(5), FOUR(4), THREE(3), TWO(2), HIDDEN(0);
 
         private int points;
 

@@ -9,10 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
-import com.ayadykin.blackjack.core.model.Card;
-import com.ayadykin.blackjack.core.model.Card.CardSuit;
-import com.ayadykin.blackjack.core.model.Card.Nominal;
-import com.ayadykin.blackjack.core.model.CardDeck;
+import com.ayadykin.blackjack.core.cards.Card;
+import com.ayadykin.blackjack.core.cards.CardDeck;
+import com.ayadykin.blackjack.core.cards.Card.CardSuit;
+import com.ayadykin.blackjack.core.cards.Card.Nominal;
 import com.ayadykin.blackjack.core.model.Player;
 
 /**
