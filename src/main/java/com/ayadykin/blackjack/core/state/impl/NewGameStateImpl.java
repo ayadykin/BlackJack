@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
 import com.ayadykin.blackjack.core.GameFlow;
 import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.state.GameState;
+import com.ayadykin.blackjack.core.state.NewGameState;
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
@@ -18,16 +18,19 @@ import com.ayadykin.blackjack.exceptions.BlackJackException;
  *
  */
 
-@Named("newGameState")
+@NewGameState
 @SessionScoped
-public class NewGame implements GameState, Serializable {
+public class NewGameStateImpl implements GameState, Serializable {
 
     private GameFlow gameFlow;
 
+    public NewGameStateImpl(){
+    	
+    }
+    
     @Inject
-    public NewGame(GameFlow gameFlow) {
+    public NewGameStateImpl(GameFlow gameFlow) {
         this.gameFlow = gameFlow;
-
     }
 
     @Override

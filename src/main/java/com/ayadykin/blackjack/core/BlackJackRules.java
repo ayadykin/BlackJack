@@ -2,9 +2,6 @@ package com.ayadykin.blackjack.core;
 
 import javax.ejb.Stateless;
 
-import com.ayadykin.blackjack.actions.BlackJackResponce;
-import com.ayadykin.blackjack.core.model.Dealer;
-
 /**
  * Created by Yadykin Andrii Sep 8, 2016
  *

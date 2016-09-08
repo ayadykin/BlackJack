@@ -76,7 +76,7 @@ public class BlackJackCoreTest extends TestCase {
     public void testCheckPlayerStep() {
         assertEquals(BlackJackResponce.NEXT_STEP, blackJackCore.playerStep(player, card6));
         assertEquals(20, player.getPoints());
-        assertEquals(BlackJackResponce.BUST, blackJackCore.playerStep(player, card6));
+        assertEquals(BlackJackResponce.YOU_BUST, blackJackCore.playerStep(player, card6));
         assertEquals(22, player.getPoints());
 
     }
@@ -98,7 +98,7 @@ public class BlackJackCoreTest extends TestCase {
     
     @Test
     public void testCheckDealerBust() {       
-        assertEquals(BlackJackResponce.BUST, blackJackCore.dealerStep(dealer, card5));
+        assertEquals(BlackJackResponce.DEALER_BUST, blackJackCore.dealerStep(dealer, card5));
         assertEquals(24, dealer.getPoints());
     }
 

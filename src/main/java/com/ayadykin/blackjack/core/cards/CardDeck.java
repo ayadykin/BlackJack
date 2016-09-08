@@ -1,5 +1,6 @@
 package com.ayadykin.blackjack.core.cards;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -10,7 +11,7 @@ import com.ayadykin.blackjack.core.cards.Card.Nominal;
  * Created by Andrey Yadykin on 22.02.2016.
  */
 
-public class CardDeck extends LinkedList<Card> {
+public class CardDeck extends LinkedList<Card> implements Serializable{
 
     public CardDeck() {
         for (CardSuit cardSuit : CardSuit.values()) {

@@ -42,6 +42,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.openejb</groupId>
+			<artifactId>openejb-junit</artifactId>
+			<version>4.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.openejb</groupId>
 			<artifactId>openejb-core</artifactId>
 			<version>4.7.4</version>
 			<scope>test</scope>
@@ -75,9 +81,9 @@
 				<artifactId>maven-glassfish-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<glassfishDirectory>C:\glassfish4\glassfish</glassfishDirectory>
+					<glassfishDirectory>D:\glassfish4\glassfish</glassfishDirectory>
 					<user>admin</user>
-					<passwordFile>C:\glassfish4\glassfish\domains\domain1\config\domain-passwords</passwordFile>
+					<passwordFile>D:\glassfish4\glassfish\domains\domain1\config\domain-passwords</passwordFile>
 					<domain>
 						<name>domain1</name>
 						<httpPort>8080</httpPort>

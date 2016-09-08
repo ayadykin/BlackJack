@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
 import com.ayadykin.blackjack.core.BlackJackCore;
@@ -13,6 +12,7 @@ import com.ayadykin.blackjack.core.GameFlow;
 import com.ayadykin.blackjack.core.model.Dealer;
 import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.state.GameState;
+import com.ayadykin.blackjack.core.state.StartGameState;
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
@@ -21,22 +21,26 @@ import com.ayadykin.blackjack.exceptions.BlackJackException;
  *
  */
 
+@StartGameState
 @SessionScoped
-@Named("startGameState")
-public class StartGame implements GameState, Serializable {
+public class StartGameStateImpl implements GameState, Serializable {
 
     @EJB
     private transient BlackJackCore blackJackCore;
 
     private GameFlow gameFlow;
-
+    
+    public StartGameStateImpl(){
+    	
+    }
+    		
     /**
      * Inject game flow for change game state
      * 
      * @param gameFlow
      */
     @Inject
-    public StartGame(GameFlow gameFlow) {
+    public StartGameStateImpl(GameFlow gameFlow) {
         this.gameFlow = gameFlow;
     }
 

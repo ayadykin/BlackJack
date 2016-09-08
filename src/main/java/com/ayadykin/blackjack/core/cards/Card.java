@@ -1,10 +1,12 @@
 package com.ayadykin.blackjack.core.cards;
 
+import java.io.Serializable;
+
 /**
  * Created by Andrey Yadykin on 22.02.2016 ð.
  */
 
-public class Card {
+public class Card implements Serializable{
     public enum CardSuit {
         spades, clubs, hearts, diamonds
     };

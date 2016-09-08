@@ -13,6 +13,7 @@ import com.ayadykin.blackjack.core.GameFlow;
 import com.ayadykin.blackjack.core.deal.DealCards;
 import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.state.GameState;
+import com.ayadykin.blackjack.core.state.InitGameState;
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
@@ -21,9 +22,9 @@ import com.ayadykin.blackjack.exceptions.BlackJackException;
  *
  */
 
+@InitGameState
 @SessionScoped
-@Named("initGameState")
-public class InitGame implements GameState, Serializable {
+public class InitGameStateImpl implements GameState, Serializable {
     @Inject
     @Named("blackJackDeal")
     private DealCards blackJackDealStrategy;
@@ -32,9 +33,13 @@ public class InitGame implements GameState, Serializable {
     private BlackJackCore blackJackCore;
 
     private GameFlow gameFlow;
-
+    
+    public InitGameStateImpl(){
+    	
+    }
+    
     @Inject
-    public InitGame(GameFlow gameFlow) {
+    public InitGameStateImpl(GameFlow gameFlow) {
         this.gameFlow = gameFlow;
     }
 
@@ -45,7 +50,13 @@ public class InitGame implements GameState, Serializable {
 
     @Override
     public void initGame(Table table) {
-        table.resetGame();
+        table.newCardDeck();
+        
+        for (Player player : table.getPlayers()) {
+			player.getCards().clear();
+			player.setPoints(0);
+		}
+        
         table.getPlayer().setBet(10);
         blackJackDealStrategy.dealCards(table.getPlayers(), table.getCardDeck());
         blackJackCore.checkBlackJack(table.getPlayer(), table.getDealer());

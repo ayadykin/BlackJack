@@ -9,8 +9,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
+import com.ayadykin.blackjack.core.state.EndGameState;
 import com.ayadykin.blackjack.core.state.GameState;
-import com.ayadykin.blackjack.core.state.impl.NewGame;
+import com.ayadykin.blackjack.core.state.InitGameState;
+import com.ayadykin.blackjack.core.state.NewGameState;
+import com.ayadykin.blackjack.core.state.StartGameState;
+import com.ayadykin.blackjack.core.table.BlackJackTable;
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 import com.ayadykin.blackjack.rest.dto.ResponseDto;
@@ -20,64 +24,69 @@ import com.ayadykin.blackjack.rest.dto.ResponseDto;
  */
 @Named
 @SessionScoped
-public class GameFlow implements Serializable {
-
-    @EJB
-    private BlackJackCore blackJackCore;
+public class GameFlow implements Serializable {    
 
     @Inject
-    private Table table;
+    @BlackJackTable
+    private Table blackJackTable;
 
     @Inject
-    @Named("initGameState")
+    @InitGameState
     private GameState initGameState;
 
     @Inject
-    @Named("startGameState")
+    @StartGameState
     private GameState startGameState;
 
     @Inject
-    @Named("endGameState")
+    @EndGameState
     private GameState endGameState;
 
-    private GameState state;
+    @Inject
+    @NewGameState
+    private GameState newGameState;
     
     private BlackJackResponce blackJackResponce = BlackJackResponce.NEXT_STEP;
-
-    public GameFlow() {
-        this.state = new NewGame(this);
+    
+    /*public GameFlow(){
+    	
     }
+    
+    @NewGameState
+    public GameFlow(GameState state) {
+        this.state = state;
+    }*/
 
     public ResponseDto initGame(Integer id) throws BlackJackException {
 
         switch (id) {
         case 0:
             // New
-            state.newGame(table);
+            newGameState.newGame(blackJackTable);
             break;
         case 1:
             // Init
-            state.initGame(table);
+            newGameState.initGame(blackJackTable);
             break;
         case 2:
             // HIT
-            blackJackResponce = state.hit(table);
+            blackJackResponce = newGameState.hit(blackJackTable);
             break;
         case 3:
             // Stand
-            blackJackResponce = state.stand(table);
+            blackJackResponce = newGameState.stand(blackJackTable);
             break;
         case 4:
             // End
-            state.endGame(blackJackResponce, table.getPlayer());
+            newGameState.endGame(blackJackResponce, blackJackTable.getPlayer());
             break;
         }
 
-        return new ResponseDto(table.getPlayers(), blackJackResponce);
+        return new ResponseDto(blackJackTable.getPlayers(), blackJackResponce);
     }
 
     public void setState(GameState state) {
-        this.state = state;
+        this.newGameState = state;
     }
 
     private void gameResult(BlackJackResponce blackJackResponce) {
@@ -100,6 +109,6 @@ public class GameFlow implements Serializable {
 
     @Remove
     public void destroy() {
-        table = null;
+        blackJackTable = null;
     }
 }

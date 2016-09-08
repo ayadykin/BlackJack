@@ -5,12 +5,12 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
 import com.ayadykin.blackjack.core.BlackJackCore;
 import com.ayadykin.blackjack.core.GameFlow;
 import com.ayadykin.blackjack.core.model.Player;
+import com.ayadykin.blackjack.core.state.EndGameState;
 import com.ayadykin.blackjack.core.state.GameState;
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
@@ -20,16 +20,20 @@ import com.ayadykin.blackjack.exceptions.BlackJackException;
  *
  */
 
+@EndGameState
 @SessionScoped
-@Named("endGameState")
-public class EndGame implements GameState, Serializable {
+public class EndGameStateImpl implements GameState, Serializable {
     @EJB
     private BlackJackCore blackJackCore;
 
     private GameFlow gameFlow;
-
+    
+    public EndGameStateImpl(){
+    	
+    }
+    
     @Inject
-    public EndGame(GameFlow gameFlow) {
+    public EndGameStateImpl(GameFlow gameFlow) {
         this.gameFlow = gameFlow;
     }
 
