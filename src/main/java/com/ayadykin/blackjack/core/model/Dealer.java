@@ -10,7 +10,7 @@ import com.ayadykin.blackjack.core.cards.Card;
  *
  */
 
-public class Dealer implements Person{
+public class Dealer extends Player{
 	private List<Card> cards = new ArrayList<>();
 	private int points;
 

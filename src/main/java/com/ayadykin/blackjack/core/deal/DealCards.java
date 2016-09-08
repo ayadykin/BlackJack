@@ -3,8 +3,8 @@ package com.ayadykin.blackjack.core.deal;
 import java.util.List;
 
 import com.ayadykin.blackjack.core.cards.CardDeck;
-import com.ayadykin.blackjack.core.model.Person;
+import com.ayadykin.blackjack.core.model.Player;
 
 public interface DealCards {
-    void dealCards(List<Person> players, CardDeck cardDeck);
+    void dealCards(List<Player> players, CardDeck cardDeck);
 }

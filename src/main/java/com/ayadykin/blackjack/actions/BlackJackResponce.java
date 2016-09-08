@@ -5,6 +5,6 @@ package com.ayadykin.blackjack.actions;
 */
 
 public enum BlackJackResponce {
-     BLACK_JACK, PUSH, WIN, LOSE, NEXT_MOVE, DEALER_STAND;
+    DEALER_BUST, YOU_BUST, DEALER_STAND, NEXT_STEP, PUSH, WIN, LOSE, BLACK_JACK;
 }
 

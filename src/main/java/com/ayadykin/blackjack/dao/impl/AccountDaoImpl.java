@@ -16,21 +16,21 @@ import com.ayadykin.blackjack.dao.AccountDao;
 @Stateless
 public class AccountDaoImpl implements AccountDao {
 
-    @PersistenceContext(unitName = "blackjack")
-    private EntityManager em;
+    //@PersistenceContext(unitName = "blackjack")
+    //private EntityManager em;
 
     @Override
     public Account getAccount(long id) {
-        TypedQuery<Account> query = em.createNamedQuery(Account.FIND_BY_PURSE, Account.class);
-        query.setParameter("purseId", id);
-        return query.getSingleResult();
+       // TypedQuery<Account> query = em.createNamedQuery(Account.FIND_BY_PURSE, Account.class);
+        //query.setParameter("purseId", id);
+        return null;//query.getSingleResult();
     }
 
     @Override
     public long createAccount() {
         Random rn = new Random();
         int id = rn.nextInt(1000);
-        em.persist(new Account(100, id));
+        //em.persist(new Account(100, id));
         return id;
     }
 
@@ -38,6 +38,6 @@ public class AccountDaoImpl implements AccountDao {
     public Account updateAccount(long id, double bet) {
         Account account =  getAccount(id);
         account.setAccount(account.getAccount() + bet);
-        return em.merge(account);
+        return null;//em.merge(account);
     }
 }

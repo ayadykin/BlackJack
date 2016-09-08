@@ -10,26 +10,26 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+//import org.codehaus.jettison.json.JSONException;
+//import org.codehaus.jettison.json.JSONObject;
 import org.junit.Test;
 
 import com.ayadykin.blackjack.rest.dto.ResponseDto;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.test.framework.AppDescriptor;
-import com.sun.jersey.test.framework.JerseyTest;
-import com.sun.jersey.test.framework.WebAppDescriptor;
+//import com.sun.jersey.api.client.WebResource;
+//import com.sun.jersey.test.framework.AppDescriptor;
+//import com.sun.jersey.test.framework.JerseyTest;
+//import com.sun.jersey.test.framework.WebAppDescriptor;
 
 /**
  * Created by Andrey Yadykin on 15 бер. 2016 р.
  */
 
-public class BlackJackRestTest extends JerseyTest {
+public class BlackJackRestTest {//extends JerseyTest {
 
     private static URI uri = UriBuilder.fromUri("http://localhost/game/blackjack").port(8080).build();
     private static Client client = ClientBuilder.newClient();
 
-    @Override
+   /* @Override
     protected AppDescriptor configure() {
         return new WebAppDescriptor.Builder().build();
     }
@@ -47,5 +47,5 @@ public class BlackJackRestTest extends JerseyTest {
         //assertEquals("NEXT_MOVE", json.getString("blackJackResponce"));
         //assertEquals("461", ((JSONObject) json.get("players")).get("id"));
 
-    }
+    }*/
 }
