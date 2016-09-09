@@ -1,18 +1,14 @@
 package com.ayadykin.blackjack.core;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Properties;
-
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
+import com.ayadykin.blackjack.core.blackjack.BlackJackCore;
 import com.ayadykin.blackjack.core.cards.Card;
 import com.ayadykin.blackjack.core.cards.Card.CardSuit;
 import com.ayadykin.blackjack.core.cards.Card.Nominal;

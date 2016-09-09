@@ -7,9 +7,8 @@ import javax.inject.Inject;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
 import com.ayadykin.blackjack.core.GameFlow;
-import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.state.GameState;
-import com.ayadykin.blackjack.core.state.NewGameState;
+import com.ayadykin.blackjack.core.state.qualifiers.NewGameState;
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
@@ -35,12 +34,13 @@ public class NewGameStateImpl implements GameState, Serializable {
 
     @Override
     public void newGame(Table table) {
-        table.init(1, 1000);
+        table.init(1);
+        //table.addPlayer(new);
         gameFlow.setState(gameFlow.getInitGameState());
     }
 
     @Override
-    public void initGame(Table table) {
+    public void startGame(Table table) {
         throw new BlackJackException("Error newGameState can only call newGame() method!");
     }
 
@@ -57,7 +57,7 @@ public class NewGameStateImpl implements GameState, Serializable {
     }
 
     @Override
-    public void endGame(BlackJackResponce blackJackResponce, Player player) {
+    public double endGame(BlackJackResponce blackJackResponce, double bet) {
         throw new BlackJackException("Error newGameState can only call newGame() method!");
 
     }

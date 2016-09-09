@@ -7,12 +7,11 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
-import com.ayadykin.blackjack.core.BlackJackCore;
 import com.ayadykin.blackjack.core.GameFlow;
+import com.ayadykin.blackjack.core.blackjack.BlackJackCore;
 import com.ayadykin.blackjack.core.model.Dealer;
-import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.state.GameState;
-import com.ayadykin.blackjack.core.state.StartGameState;
+import com.ayadykin.blackjack.core.state.qualifiers.StartGameState;
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
@@ -51,7 +50,7 @@ public class StartGameStateImpl implements GameState, Serializable {
     }
 
     @Override
-    public void initGame(Table table) {
+    public void startGame(Table table) {
         throw new BlackJackException("Error you can't call initGame() method, startGameState can call hit() or stand methods!");
     }
 
@@ -86,7 +85,7 @@ public class StartGameStateImpl implements GameState, Serializable {
     }
 
     @Override
-    public void endGame(BlackJackResponce blackJackResponce, Player player) {
+    public double endGame(BlackJackResponce blackJackResponce, double bet) {
         throw new BlackJackException("Error you can't call endGame() method, startGameState can call hit() or stand methods!");
     }
 

@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.core.state;
+package com.ayadykin.blackjack.core.state.qualifiers;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

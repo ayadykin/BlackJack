@@ -14,17 +14,22 @@ import com.ayadykin.blackjack.core.model.Player;
  */
 @Local
 public interface Table {
-	void init(long id, double cash);
-	
-	void newCardDeck();
-	
-	Player getPlayer();
-	
-	List<Player> getPlayers();
-	
-	CardDeck getCardDeck();
-	
-	Card getCard();
-	
-	Dealer getDealer();
+   
+    void init(long id);
+    
+    long getId();
+
+    void addPlayer(Player player);
+
+    void newCardDeck();
+
+    Player getPlayer();
+
+    List<Player> getPlayers();
+
+    CardDeck getCardDeck();
+
+    Card getCard();
+
+    Dealer getDealer();
 }

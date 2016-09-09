@@ -3,8 +3,8 @@ package com.ayadykin.blackjack.services.impl;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.ayadykin.blackjack.core.model.Account;
 import com.ayadykin.blackjack.dao.AccountDao;
+import com.ayadykin.blackjack.model.Account;
 import com.ayadykin.blackjack.services.AccountService;
 
 /**

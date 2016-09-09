@@ -1,6 +1,6 @@
 package com.ayadykin.blackjack.services;
 
-import com.ayadykin.blackjack.core.model.Account;
+import com.ayadykin.blackjack.model.Account;
 
 /**
 * Created by Andrey Yadykin on 15 бер. 2016 р.

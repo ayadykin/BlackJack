@@ -1,6 +1,6 @@
 package com.ayadykin.blackjack.dao;
 
-import com.ayadykin.blackjack.core.model.Account;
+import com.ayadykin.blackjack.model.Account;
 
 /**
  * Created by Andrey Yadykin on 22 лют. 2016 р.

@@ -8,12 +8,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
-import com.ayadykin.blackjack.core.BlackJackCore;
 import com.ayadykin.blackjack.core.GameFlow;
+import com.ayadykin.blackjack.core.blackjack.BlackJackCore;
 import com.ayadykin.blackjack.core.deal.DealCards;
 import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.state.GameState;
-import com.ayadykin.blackjack.core.state.InitGameState;
+import com.ayadykin.blackjack.core.state.qualifiers.InitGameState;
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
@@ -49,7 +49,7 @@ public class InitGameStateImpl implements GameState, Serializable {
     }
 
     @Override
-    public void initGame(Table table) {
+    public void startGame(Table table) {
         table.newCardDeck();
         
         for (Player player : table.getPlayers()) {
@@ -76,7 +76,7 @@ public class InitGameStateImpl implements GameState, Serializable {
     }
 
     @Override
-    public void endGame(BlackJackResponce blackJackResponce, Player player) {
+    public double endGame(BlackJackResponce blackJackResponce, double bet) {
         throw new BlackJackException("Error initGameState can only call initGame() method!");
 
     }

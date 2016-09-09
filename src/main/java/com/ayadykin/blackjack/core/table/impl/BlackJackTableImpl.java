@@ -10,42 +10,60 @@ import com.ayadykin.blackjack.core.cards.Card;
 import com.ayadykin.blackjack.core.cards.CardDeck;
 import com.ayadykin.blackjack.core.model.Dealer;
 import com.ayadykin.blackjack.core.model.Player;
-import com.ayadykin.blackjack.core.table.BlackJackTable;
 import com.ayadykin.blackjack.core.table.Table;
+import com.ayadykin.blackjack.core.table.qualifiers.BlackJackTable;
 
 @BlackJackTable
 @SessionScoped
-public class BlackJackTableImpl implements Table, Serializable{
-	
-	private List<Player> players = new ArrayList<>();
-	private CardDeck cardDeck;
+public class BlackJackTableImpl implements Table, Serializable {
 
-	public void init(long id, double cash) {
-		players.add(new Dealer());
-		players.add(new Player(id, cash));
-	}
+    private long id;
+    private List<Player> players = new ArrayList<>();
+    private CardDeck cardDeck;
 
-	public void newCardDeck() {
-		cardDeck = new CardDeck();
-	}
+    @Override
+    public void init(long id) {
+        this.id = id;
+        players.add(new Dealer());
+    }
+    
+    @Override
+    public long getId() {
+        return id;
+    }
 
-	public CardDeck getCardDeck() {
-		return cardDeck;
-	}
+    @Override
+    public void newCardDeck() {
+        cardDeck = new CardDeck();
+    }
 
-	public Card getCard() {
-		return cardDeck.getCard().setHidden(false);
-	}
+    @Override
+    public CardDeck getCardDeck() {
+        return cardDeck;
+    }
 
-	public List<Player> getPlayers() {
-		return players;
-	}
+    @Override
+    public Card getCard() {
+        return cardDeck.getCard().setHidden(false);
+    }
 
-	public Dealer getDealer() {
-		return (Dealer) players.get(0);
-	}
+    @Override
+    public List<Player> getPlayers() {
+        return players;
+    }
 
-	public Player getPlayer() {
-		return players.get(1);
-	}
+    @Override
+    public Dealer getDealer() {
+        return (Dealer) players.get(0);
+    }
+
+    @Override
+    public Player getPlayer() {
+        return players.get(1);
+    }
+
+    @Override
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
 }

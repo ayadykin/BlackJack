@@ -1,44 +1,50 @@
-package com.ayadykin.blackjack.core.model;
+package com.ayadykin.blackjack.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+
+import com.ayadykin.blackjack.utils.Constants;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016 ð.
  */
 
 @Entity
-@NamedQuery(name = Account.FIND_BY_PURSE, query = "SELECT a FROM Account a where a.purseId = :purseId")
+@NamedQuery(name = Constants.FIND_BY_PURSE, query = "SELECT a FROM Account a where a.purseId = :purseId")
 public class Account {
-    
-    public static final String FIND_BY_PURSE = "Account.findByPurse";
-    
+
     @Id
     @GeneratedValue
     private long id;
     @Column(nullable = false)
-    private double account;
+    private double balance;
     @Column(nullable = false)
     private long purseId;
+    @OneToOne
+    private User user;
 
-    public Account(){
-        
-    }
-            
-    public Account(double account, long purseId) {
-        this.account = account;
-        this.purseId = purseId;
+    public Account() {
+
     }
 
-    public double getAccount() {
-        return account;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setAccount(double account) {
-        this.account = account;
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public long getId() {

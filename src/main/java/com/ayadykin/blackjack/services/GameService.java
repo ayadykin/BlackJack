@@ -10,7 +10,7 @@ import com.ayadykin.blackjack.rest.dto.ResponseDto;
 
 
 public interface GameService {
-    ResponseDto initGame(Integer id) throws BlackJackException;
+    ResponseDto gameAction(PlayerActionDto playerActionDto) throws BlackJackException;
    
 }
 

@@ -4,6 +4,8 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.ayadykin.blackjack.core.GameFlow;
+import com.ayadykin.blackjack.core.table.impl.TableBoardImpl;
+import com.ayadykin.blackjack.rest.dto.PlayerActionDto;
 import com.ayadykin.blackjack.rest.dto.ResponseDto;
 import com.ayadykin.blackjack.services.GameService;
 
@@ -17,12 +19,13 @@ public class GameServiceImpl implements GameService {
     @Inject
     private GameFlow gameFlow;
 
-
+    @Inject
+    private TableBoardImpl tableBoard;
 
     @Override
-    public ResponseDto initGame(Integer id) {
+    public ResponseDto gameAction(PlayerActionDto playerActionDto) {
 
-        return gameFlow.initGame(id);
+        return gameFlow.blackJackActions(playerActionDto.getBlackJackAction());
     }
 
 

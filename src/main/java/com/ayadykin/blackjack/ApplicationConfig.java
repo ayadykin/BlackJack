@@ -30,7 +30,7 @@ public class ApplicationConfig extends Application {
         c.add(BlackJackRestService.class);
         c.add(GensonJaxRSFeature.class);
         c.add(BlackJackProvider.class);
-        
+ 
         
         classes = Collections.unmodifiableSet(c);
     }

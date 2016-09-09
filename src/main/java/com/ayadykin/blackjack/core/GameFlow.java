@@ -2,20 +2,21 @@ package com.ayadykin.blackjack.core;
 
 import java.io.Serializable;
 
-import javax.ejb.EJB;
 import javax.ejb.Remove;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.ayadykin.blackjack.actions.BlackJackActions;
 import com.ayadykin.blackjack.actions.BlackJackResponce;
-import com.ayadykin.blackjack.core.state.EndGameState;
 import com.ayadykin.blackjack.core.state.GameState;
-import com.ayadykin.blackjack.core.state.InitGameState;
-import com.ayadykin.blackjack.core.state.NewGameState;
-import com.ayadykin.blackjack.core.state.StartGameState;
-import com.ayadykin.blackjack.core.table.BlackJackTable;
+import com.ayadykin.blackjack.core.state.qualifiers.EndGameState;
+import com.ayadykin.blackjack.core.state.qualifiers.InitGameState;
+import com.ayadykin.blackjack.core.state.qualifiers.NewGameState;
+import com.ayadykin.blackjack.core.state.qualifiers.StartGameState;
 import com.ayadykin.blackjack.core.table.Table;
+import com.ayadykin.blackjack.core.table.TableBoard;
+import com.ayadykin.blackjack.core.table.qualifiers.BlackJackTable;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 import com.ayadykin.blackjack.rest.dto.ResponseDto;
 
@@ -24,7 +25,7 @@ import com.ayadykin.blackjack.rest.dto.ResponseDto;
  */
 @Named
 @SessionScoped
-public class GameFlow implements Serializable {    
+public class GameFlow implements Serializable {
 
     @Inject
     @BlackJackTable
@@ -41,44 +42,40 @@ public class GameFlow implements Serializable {
     @Inject
     @EndGameState
     private GameState endGameState;
-
+    
+    @Inject
+    private TableBoard tableBoard;
+    
     @Inject
     @NewGameState
-    private GameState newGameState;
-    
-    private BlackJackResponce blackJackResponce = BlackJackResponce.NEXT_STEP;
-    
-    /*public GameFlow(){
-    	
-    }
-    
-    @NewGameState
-    public GameFlow(GameState state) {
-        this.state = state;
-    }*/
+    private GameState state;
 
-    public ResponseDto initGame(Integer id) throws BlackJackException {
+    private BlackJackResponce blackJackResponce;
 
-        switch (id) {
-        case 0:
+    public ResponseDto blackJackActions(BlackJackActions blackJackActions) throws BlackJackException {
+
+        switch (blackJackActions) {
+        case NEW:
             // New
-            newGameState.newGame(blackJackTable);
+            tableBoard.addTable(blackJackTable);
+            blackJackResponce = BlackJackResponce.NEXT_STEP;
+            state.newGame(blackJackTable);
             break;
-        case 1:
+        case START:
             // Init
-            newGameState.initGame(blackJackTable);
+            blackJackResponce = BlackJackResponce.NEXT_STEP;
+            state.startGame(blackJackTable);
             break;
-        case 2:
+        case HIT:
             // HIT
-            blackJackResponce = newGameState.hit(blackJackTable);
+            blackJackResponce = state.hit(blackJackTable);
             break;
-        case 3:
+        case STAND:
             // Stand
-            blackJackResponce = newGameState.stand(blackJackTable);
+            blackJackResponce = state.stand(blackJackTable);
+            state.endGame(blackJackResponce, blackJackTable.getPlayer().getBet());
             break;
-        case 4:
-            // End
-            newGameState.endGame(blackJackResponce, blackJackTable.getPlayer());
+        default:
             break;
         }
 
@@ -86,13 +83,7 @@ public class GameFlow implements Serializable {
     }
 
     public void setState(GameState state) {
-        this.newGameState = state;
-    }
-
-    private void gameResult(BlackJackResponce blackJackResponce) {
-
-        // Account account = accountService.updateAccount(player.getId(), bet);
-        // player.setCash(account.getAccount());
+        this.state = state;
     }
 
     public GameState getInitGameState() {

@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.core;
+package com.ayadykin.blackjack.core.blackjack;
 
 import java.io.Serializable;
 
@@ -73,6 +73,10 @@ public class BlackJackCore implements Serializable{
         } else {
             return BlackJackResponce.LOSE;
         }
+    }
+    
+    public double countBet(BlackJackResponce blackJackResponce, double bet) {
+        return blackJackRules.countBet(blackJackResponce, bet);
     }
 
     private void dealerOpenHiddenCard(Dealer dealer) {
