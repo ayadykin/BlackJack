@@ -18,7 +18,7 @@ import com.owlike.genson.Genson;
  *
  */
 
-@Named("logoutSuccess")
+@Named
 public class LogoutSuccess implements LogoutSuccessHandler {
 
     @Override

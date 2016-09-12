@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class User implements Serializable, UserDetails {
     private String password;
     private String name;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Role role;
     @Transient
     private Player player;
@@ -47,6 +48,12 @@ public class User implements Serializable, UserDetails {
 
     public User() {
         // player = new Player(id, account.getBalance());
+    }
+
+    public User(String email, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public Account getAccount() {
@@ -139,4 +146,10 @@ public class User implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "User [email=" + email + ", role=" + role + "]";
+    }
+
 }

@@ -4,13 +4,15 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.ayadykin.blackjack.dao.UserDao;
 import com.ayadykin.blackjack.model.User;
 
 /**
@@ -18,22 +20,32 @@ import com.ayadykin.blackjack.model.User;
  *
  */
 
-@Named("userService")
+@Named
 public class UserService implements UserDetailsService {
 
-    @EJB
+    private static final Logger logger = Logger.getLogger(UserService.class.getName());
+
+    @Inject
     private UserDao userDao;
 
     @Override
-    public UserDetails loadUserByUsername(String email){
-
-        User user = userDao.findByEmail(email);
-        if (Objects.isNull(user)) {
-            throw new UsernameNotFoundException("user not found");
+    @Transactional
+    public UserDetails loadUserByUsername(String email) {
+        logger.debug("-------- : " + email);
+        User user = null;
+        try {
+            if(Objects.isNull(userDao)){
+                logger.debug("userDao -------- null: ");
+            }
+             user = userDao.findByEmail(email);
+            logger.debug("userDao -------- : " + user.getEmail());
+            if (Objects.isNull(user)) {
+                throw new UsernameNotFoundException("user not found");
+            }
+            user.setAuthorities(Arrays.asList(user.getRole()));
+        } catch (Exception e) {
+            logger.error(" loadUserByUsername error : " + e.getMessage());
         }
-        user.setAuthorities(Arrays.asList(user.getRole()));
-
         return user;
     }
 }
-

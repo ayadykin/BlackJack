@@ -8,34 +8,37 @@
 	<packaging>war</packaging>
 
 	<properties>
+		<project.build.finalName>BlackJack</project.build.finalName>
 		<java.version>1.8</java.version>
 		<version.glassfish>4.0</version.glassfish>
 		<version.javaee>7.0</version.javaee>
 		<version.jersey>2.3.1</version.jersey>
 		<version.json>1.0.2</version.json>
+		<eclipselink.version>2.5.0</eclipselink.version>
 		<org.springframework.version>4.3.2.RELEASE</org.springframework.version>
 		<springframework.security>3.2.3.RELEASE</springframework.security>
 		<commons.logging.version>1.2</commons.logging.version>
 		<org.slf4j.version>1.7.5</org.slf4j.version>
+		<log4j.version>1.2.17</log4j.version>
 	</properties>
-<dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${org.springframework.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-bom</artifactId>
-                <version>${springframework.security}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${org.springframework.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-bom</artifactId>
+				<version>${springframework.security}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 
 		<dependency>
@@ -53,8 +56,15 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
-		<dependency>
 
+		<!-- Eclipselink -->
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>${eclipselink.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.owlike</groupId>
 			<artifactId>genson</artifactId>
 			<version>1.4</version>
@@ -72,7 +82,23 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>${org.slf4j.version}</version>
 		</dependency>
+		<dependency>
+            <groupId>log4j</groupId>
+            <artifactId>apache-log4j-extras</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
 
+		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -94,7 +120,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>BlackJack</finalName>
+		<finalName>${project.build.finalName}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -116,29 +142,16 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.glassfish.maven.plugin</groupId>
-				<artifactId>maven-glassfish-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<glassfishDirectory>C:\glassfish4\glassfish</glassfishDirectory>
-					<user>admin</user>
-					<passwordFile>C:\glassfish4\glassfish\domains\domain1\config\domain-passwords</passwordFile>
-					<domain>
-						<name>domain1</name>
-						<httpPort>8080</httpPort>
-						<adminPort>4848</adminPort>
-					</domain>
-					<components>
-						<component>
-							<name>BlackJack</name>
-							<artifact>target/BlackJack.war</artifact>
-						</component>
-					</components>
-					<debug>true</debug>
-					<terse>false</terse>
-					<echo>true</echo>
-				</configuration>
-			</plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <update>true</update>
+                    <url>http://localhost:8080/manager/text</url>
+                    <username>tomcat</username>
+                    <password>nopass</password>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 

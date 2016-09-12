@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.dao;
+package com.ayadykin.blackjack.security;
 
 import com.ayadykin.blackjack.model.User;
 

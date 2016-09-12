@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -21,6 +22,25 @@ public class Role implements GrantedAuthority, Serializable {
     private long id;
 
     private String role;
+
+    @OneToOne(mappedBy = "role")
+    private User user;
+
+    public Role() {
+
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Role(String role) {
+        this.role = role;
+    }
 
     public long getId() {
         return id;
