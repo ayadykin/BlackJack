@@ -1,5 +1,6 @@
 package com.ayadykin.blackjack.rest;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -12,16 +13,15 @@ import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import com.ayadykin.blackjack.init.InitImpl;
 import com.ayadykin.blackjack.rest.dto.PlayerActionDto;
-import com.ayadykin.blackjack.security.RestAuthenticationEntryPoint;
 import com.ayadykin.blackjack.services.GameService;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016.
  */
+
 
 @Stateless
 @Path("/blackjack")
@@ -29,7 +29,7 @@ import com.ayadykin.blackjack.services.GameService;
 @Consumes(MediaType.APPLICATION_JSON)
 public class BlackJackRestService {
 
-    private static final Logger logger = LoggerFactory.getLogger(RestAuthenticationEntryPoint.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlackJackRestService.class);
 
     @EJB
     private InitImpl init;

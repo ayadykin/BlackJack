@@ -3,7 +3,6 @@ package com.ayadykin.blackjack.security;
 import java.util.Arrays;
 import java.util.Objects;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
@@ -13,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.ayadykin.blackjack.model.Role;
 import com.ayadykin.blackjack.model.User;
 
 /**
@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
             if (Objects.isNull(user)) {
                 throw new UsernameNotFoundException("user not found");
             }
-            user.setAuthorities(Arrays.asList(user.getRole()));
+            user.setAuthorities(Arrays.asList(new Role("user")));
         } catch (Exception e) {
             logger.error(" loadUserByUsername error : " + e.getMessage());
         }

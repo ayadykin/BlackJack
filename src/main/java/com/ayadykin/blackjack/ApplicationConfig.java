@@ -9,10 +9,11 @@ import javax.ws.rs.core.Application;
 
 import com.ayadykin.blackjack.rest.BlackJackRestService;
 import com.ayadykin.blackjack.rest.Signin;
+import com.ayadykin.blackjack.rest.providers.AuthenticationFilter;
 import com.ayadykin.blackjack.rest.providers.BlackJackProvider;
 import com.owlike.genson.ext.jaxrs.GensonJaxRSFeature;
 
-@ApplicationPath("/*")
+@ApplicationPath("/")
 public class ApplicationConfig extends Application {
 
     // ======================================
@@ -32,6 +33,7 @@ public class ApplicationConfig extends Application {
         c.add(Signin.class);
         c.add(GensonJaxRSFeature.class);
         c.add(BlackJackProvider.class);
+        //c.add(AuthenticationFilter.class);
         
         classes = Collections.unmodifiableSet(c);
     }

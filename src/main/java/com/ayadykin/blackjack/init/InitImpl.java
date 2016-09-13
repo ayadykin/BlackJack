@@ -1,6 +1,6 @@
 package com.ayadykin.blackjack.init;
 
-import javax.ejb.LocalBean;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import com.ayadykin.blackjack.model.Role;
@@ -26,9 +27,10 @@ public class InitImpl {
     @PersistenceContext
     private EntityManager em;
 
+    @PostConstruct
     @Transactional
     public void Init() {
-        // PasswordEncoder passwordEncoder = new StandardPasswordEncoder();
+        //PasswordEncoder passwordEncoder = new StandardPasswordEncoder();
         String pass = new StandardPasswordEncoder().encode("user1");
         em.persist(new User("user1", pass, new Role("USER")));
     }
