@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.security;
+package com.ayadykin.blackjack.security.handlers;
 
 import java.io.IOException;
 

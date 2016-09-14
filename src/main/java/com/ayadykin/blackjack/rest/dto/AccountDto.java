@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.rest;
+package com.ayadykin.blackjack.rest.dto;
 
 import java.io.Serializable;
 
@@ -54,6 +54,11 @@ public class AccountDto implements Serializable {
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountDto [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", locale=" + locale + "]";
     }
 
 }

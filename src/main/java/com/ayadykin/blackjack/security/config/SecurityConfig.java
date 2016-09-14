@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.config;
+package com.ayadykin.blackjack.security.config;
 
 import javax.inject.Inject;
 
@@ -9,15 +9,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 //import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import com.ayadykin.blackjack.security.AuthenticationFailure;
-import com.ayadykin.blackjack.security.CsrfHeaderFilter;
-import com.ayadykin.blackjack.security.RestAuthenticationEntryPoint;
+import com.ayadykin.blackjack.security.filter.CsrfHeaderFilter;
 
 /**
  * Created by Yadykin Andrii May 12, 2016
@@ -28,17 +28,17 @@ import com.ayadykin.blackjack.security.RestAuthenticationEntryPoint;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //@Autowired
-    //private RestAuthenticationEntryPoint authenticationEntryPoint;
+    @Inject
+    private AuthenticationEntryPoint restAuthenticationEntryPoint;
     @Inject
     private LogoutSuccessHandler logoutSuccess;
-    /*@Inject
-    private AuthenticationFailure authenticationFailure;*/
+    @Inject
+    private AccessDeniedHandler accessDenied;
     @Inject
     private UserDetailsService userService;
-    
+
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.eraseCredentials(true).userDetailsService(userService).passwordEncoder(new StandardPasswordEncoder());
     }
 
@@ -47,9 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/favicon.ico", "/resources/**", "/signin", "/signup").permitAll().anyRequest().authenticated()
                 .and().csrf().csrfTokenRepository(csrfTokenRepository()).and().httpBasic()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint()).and()
-                .exceptionHandling().accessDeniedHandler(new AuthenticationFailure())
-                .and().logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccess).and()
+                .authenticationEntryPoint(restAuthenticationEntryPoint).and().exceptionHandling().accessDeniedHandler(accessDenied).and()
+                .logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccess).and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
 

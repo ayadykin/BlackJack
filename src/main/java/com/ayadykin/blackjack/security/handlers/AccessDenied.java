@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.security;
+package com.ayadykin.blackjack.security.handlers;
 
 import java.io.IOException;
 
@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import com.ayadykin.blackjack.security.RestAuthenticationEntryPoint;
 import com.owlike.genson.Genson;
 
 /**
@@ -20,8 +21,8 @@ import com.owlike.genson.Genson;
  *
  */
 
-@Named("authenticationFailure")
-public class AuthenticationFailure implements AccessDeniedHandler {
+@Named
+public class AccessDenied implements AccessDeniedHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RestAuthenticationEntryPoint.class);
 

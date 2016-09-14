@@ -21,11 +21,6 @@
 	<logger name="org.springframework">
 		<level value="DEBUG" />
 	</logger>
-	
-	<logger name="org.eclipse.persistence">
-        <level value="DEBUG" />
-    </logger>
-
     
 	<root>
 		<level value="DEBUG" />

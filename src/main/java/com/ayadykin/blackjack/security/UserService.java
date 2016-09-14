@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.ayadykin.blackjack.model.Role;
 import com.ayadykin.blackjack.model.User;
+import com.ayadykin.blackjack.security.dao.UserDao;
 
 /**
  * Created by Yadykin Andrii Sep 9, 2016

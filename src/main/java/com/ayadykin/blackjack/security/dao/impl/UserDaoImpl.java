@@ -1,12 +1,9 @@
-package com.ayadykin.blackjack.security;
+package com.ayadykin.blackjack.security.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.ejb.Stateless;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
@@ -17,6 +14,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.ayadykin.blackjack.model.Role;
 import com.ayadykin.blackjack.model.User;
+import com.ayadykin.blackjack.security.dao.UserDao;
 
 /**
  * Created by Yadykin Andrii Sep 9, 2016

@@ -27,9 +27,10 @@ public class InitImpl {
     @PersistenceContext
     private EntityManager em;
 
-    @PostConstruct
+    //@PostConstruct
     @Transactional
     public void Init() {
+        logger.debug("----- Init");
         //PasswordEncoder passwordEncoder = new StandardPasswordEncoder();
         String pass = new StandardPasswordEncoder().encode("user1");
         em.persist(new User("user1", pass, new Role("USER")));

@@ -1,6 +1,5 @@
 package com.ayadykin.blackjack.rest;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -14,14 +13,12 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ayadykin.blackjack.init.InitImpl;
 import com.ayadykin.blackjack.rest.dto.PlayerActionDto;
 import com.ayadykin.blackjack.services.GameService;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016.
  */
-
 
 @Stateless
 @Path("/blackjack")
@@ -30,17 +27,12 @@ import com.ayadykin.blackjack.services.GameService;
 public class BlackJackRestService {
 
     private static final Logger logger = LoggerFactory.getLogger(BlackJackRestService.class);
-
-    @EJB
-    private InitImpl init;
+    
     @EJB
     private GameService gameService;
-    
 
     @GET
     public Response init() {
-        logger.debug("-----");
-        init.Init();
         return Response.ok("Ok").build();
     }
 

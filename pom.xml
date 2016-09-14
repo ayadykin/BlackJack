@@ -17,7 +17,7 @@
 		<org.springframework.version>4.3.2.RELEASE</org.springframework.version>
 		<springframework.security>3.2.3.RELEASE</springframework.security>
 
-		<eclipselink.version>2.5.0</eclipselink.version>
+		<eclipselink.version>2.6.3</eclipselink.version>
 		<commons.logging.version>1.2</commons.logging.version>
 		<org.slf4j.version>1.7.5</org.slf4j.version>
 		<log4j.version>1.2.17</log4j.version>

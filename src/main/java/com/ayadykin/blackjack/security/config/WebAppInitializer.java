@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.config;
+package com.ayadykin.blackjack.security.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

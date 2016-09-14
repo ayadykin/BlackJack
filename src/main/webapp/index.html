@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<title></title>
+</head>
+<body>
+    <h1></h1>
+
+    <h2></h2>
+    <a href="rs/book"></a>
+    <br />
+<script>
+    function get() {
+        $.ajax({
+        type : 'GET',
+        dataType : 'json',
+        url : '/BlackJack/blackjack',
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader('X-XSRF-TOKEN', $.cookie("XSRF-TOKEN"));
+        }
+        });
+    }
+    function signin() {
+        $.ajax({
+            type : 'GET',
+            dataType : 'json',
+            url : '/BlackJack/signin',
+            headers : {
+            'Authorization': "Basic " + btoa("user1:user1"),
+            'X-XSRF-TOKEN': $.cookie("XSRF-TOKEN")
+            }
+        });
+    }
+    function send() {
+        $.ajax({
+        type : 'POST',
+        dataType : 'json',
+        url : '/BlackJack/blackjack',
+        data : {"blackJackAction":"NEW"},
+        success : function() {
+        },
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader('X-XSRF-TOKEN', $.cookie("XSRF-TOKEN"));
+        }
+        });
+    }
+    function logout() {
+        $.ajax({
+        type : 'POST',
+        dataType : 'json',
+        url : '/BlackJack/logout',
+        headers : {
+            'Authorization': "Basic " + btoa("user1:user1"),
+            'X-XSRF-TOKEN': $.cookie("XSRF-TOKEN")
+            }
+        });
+    }
+    </script>
+    <BUTTON onclick="get()">GET</BUTTON>
+    <BUTTON onclick="send()">Send</BUTTON>
+    <BUTTON onclick="signin()">Signin</BUTTON>
+    <BUTTON onclick="logout()">logout</BUTTON>
+</body>
+</html>
