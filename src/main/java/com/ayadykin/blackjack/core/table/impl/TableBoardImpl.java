@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.core.table.TableBoard;
-import com.ayadykin.blackjack.exceptions.BlackJackException;
 
 /**
  * Created by Yadykin Andrii Sep 9, 2016
@@ -40,6 +39,6 @@ public class TableBoardImpl implements Serializable, TableBoard {
     @Override
     public Table getTable(long id) {
         logger.debug("getTable size {}", tables.size());
-        return tables.stream().filter(t -> t.getId() == id).findFirst().orElseThrow(() -> new BlackJackException("Table not found"));
+        return tables.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 }

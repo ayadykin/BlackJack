@@ -30,7 +30,7 @@ public class PlayerServiceImpl implements PlayerService{
         return new Player(user.getId(), user.getName(), user.getAccount().getBalance());
     }
 
-    public Player getPlayer(Table blackJackTable) {
+    public Player getLoggedPlayerByTable(Table blackJackTable) {
         User user = userService.getLoggedUser();
         logger.debug(" getPlayer ", user);
         return blackJackTable.getPlayers().stream().filter(p -> p.getId() == user.getId()).findFirst()

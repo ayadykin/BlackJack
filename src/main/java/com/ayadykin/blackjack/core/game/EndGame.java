@@ -1,10 +1,8 @@
 package com.ayadykin.blackjack.core.game;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.ayadykin.blackjack.actions.PlayerStatus;
-import com.ayadykin.blackjack.core.blackjack.BlackJackCore;
 import com.ayadykin.blackjack.core.model.Dealer;
 import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.table.Table;
@@ -17,14 +15,12 @@ import com.ayadykin.blackjack.core.table.Table;
 @Stateless
 public class EndGame {
     
-    @EJB
-    private BlackJackCore blackJackCore;
-    
     public void endGame(Table table) {
         // Clear
         for (Player player : table.getPlayers()) {
             player.getCards().clear();
             player.setPoints(0);
+            player.setBet(0);
             player.setPlayerStatus(PlayerStatus.INIT);
 
         }

@@ -1,6 +1,7 @@
-package com.ayadykin.blackjack.core;
+package com.ayadykin.blackjack.core.game;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.core.table.TableBoard;
+import com.ayadykin.blackjack.exceptions.BlackJackException;
 import com.ayadykin.blackjack.services.PlayerService;
 
 /**
@@ -19,20 +21,23 @@ import com.ayadykin.blackjack.services.PlayerService;
  */
 
 @Stateless
-public class ConnectToGameFlow implements Serializable{
+public class ConnectToGame implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConnectToGameFlow.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectToGame.class);
 
     @Inject
     private TableBoard tableBoard;
     @EJB
     private PlayerService playerService;
-    
+
     public Table connectToTable(long tableId) {
 
         logger.debug(" connectToTable tableId : {}", tableId);
 
         Table blackJackTable = tableBoard.getTable(tableId);
+        if (Objects.isNull(blackJackTable)) {
+            throw new BlackJackException("Table not found");
+        }
 
         blackJackTable.addPlayer(playerService.createPlayer());
 

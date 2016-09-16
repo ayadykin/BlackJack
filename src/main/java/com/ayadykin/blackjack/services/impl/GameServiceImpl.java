@@ -1,5 +1,6 @@
 package com.ayadykin.blackjack.services.impl;
 
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import javax.ejb.EJB;
@@ -8,18 +9,17 @@ import javax.inject.Inject;
 
 import com.ayadykin.blackjack.actions.GameActions;
 import com.ayadykin.blackjack.actions.PlayerStatus;
-import com.ayadykin.blackjack.core.ConnectToGameFlow;
 import com.ayadykin.blackjack.core.GameFlow;
+import com.ayadykin.blackjack.core.game.CheckTableExist;
+import com.ayadykin.blackjack.core.game.ConnectToGame;
+import com.ayadykin.blackjack.core.game.CreateNewGame;
 import com.ayadykin.blackjack.core.table.BlackJackTable;
-import com.ayadykin.blackjack.core.table.TableBoard;
-import com.ayadykin.blackjack.core.table.TableType;
-import com.ayadykin.blackjack.core.table.factory.TableFactory;
+import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.core.timer.StartGameTimer;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 import com.ayadykin.blackjack.rest.dto.PlayerActionDto;
 import com.ayadykin.blackjack.rest.dto.ResponseDto;
 import com.ayadykin.blackjack.services.GameService;
-import com.ayadykin.blackjack.services.PlayerService;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016.
@@ -31,16 +31,14 @@ public class GameServiceImpl implements GameService {
     @Inject
     private GameFlow gameFlow;
     @EJB
-    private ConnectToGameFlow connectToGameFlow;
-    @Inject
-    private TableFactory tableFactory;
+    private ConnectToGame connectToGameFlow;
     @EJB
-    private PlayerService playerService;
-    @Inject
-    private TableBoard tableBoard;
+    private CreateNewGame createNewGame;
     @EJB
     private StartGameTimer gameTimer;
-    
+    @EJB
+    private CheckTableExist checkTableExist;
+
     @Override
     public ResponseDto gameAction(PlayerActionDto playerActionDto) {
         return gameFlow.blackJackActions(playerActionDto.getBlackJackAction());
@@ -54,27 +52,30 @@ public class GameServiceImpl implements GameService {
             blackJackTable = (BlackJackTable) connectToGameFlow.connectToTable(1);
             break;
         case NEW:
-            blackJackTable = (BlackJackTable) tableFactory.createTable(TableType.Type.BLACK_JACK);
-            blackJackTable.init(playerService.createPlayer());
-            tableBoard.addTable(blackJackTable);
-            
+            Table table = checkTableExist.getExistTable();
+            if (Objects.nonNull(table)) {
+                blackJackTable = (BlackJackTable) table;
+            } else {
+                blackJackTable = (BlackJackTable) createNewGame.createNewTable();
+            }
             gameTimer.setStartGameTimer(blackJackTable);
+
             break;
         default:
             throw new BlackJackException("Error game type");
         }
         gameFlow.initGameFlow(blackJackTable);
     }
-    
+
     @Override
-    //@Asynchronous
+    // @Asynchronous
     public Callable<PlayerStatus> gameStatus() throws InterruptedException {
         Thread.sleep(5000);
         return gameFlow::getPlayerStatus;
     }
-    
+
     @Override
-    //@Asynchronous
+    // @Asynchronous
     public Callable<ResponseDto> getCards() throws InterruptedException {
         Thread.sleep(5000);
         return gameFlow::getResponseDto;

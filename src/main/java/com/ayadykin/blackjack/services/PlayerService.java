@@ -12,6 +12,6 @@ public interface PlayerService {
     
     public Player createPlayer();
     
-    Player getPlayer(Table blackJackTable);
+    Player getLoggedPlayerByTable(Table blackJackTable);
 }
 

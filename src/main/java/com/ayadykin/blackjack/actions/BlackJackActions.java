@@ -5,6 +5,6 @@ package com.ayadykin.blackjack.actions;
  */
 
 public enum BlackJackActions {
-    BET, HIT, STAND, END;
+    BET, HIT, STAND;
 
 }

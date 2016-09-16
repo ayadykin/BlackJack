@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ayadykin.blackjack.actions.BlackJackActions;
-import com.ayadykin.blackjack.actions.BlackJackResponce;
 import com.ayadykin.blackjack.actions.PlayerStatus;
+import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.state.GameState;
 import com.ayadykin.blackjack.core.state.qualifiers.SetBetState;
 import com.ayadykin.blackjack.core.state.qualifiers.StartGameState;
@@ -63,19 +63,16 @@ public class GameFlow implements Serializable {
         switch (blackJackActions) {
 
         case BET:
-            playerService.getPlayer(blackJackTable).setBet(50);
+            playerService.getLoggedPlayerByTable(blackJackTable).setBet(50);
             state.setBet(50);
             break;
         case HIT:
             // HIT
-            state.hit(playerService.getPlayer(blackJackTable), blackJackTable);
+            state.hit(playerService.getLoggedPlayerByTable(blackJackTable), blackJackTable);
             break;
         case STAND:
             // Stand
-            state.stand(playerService.getPlayer(blackJackTable), blackJackTable);
-            break;
-        case END:
-            // gameTimer.setTimer(this);
+            state.stand(playerService.getLoggedPlayerByTable(blackJackTable), blackJackTable);
             break;
         default:
             break;
@@ -85,12 +82,11 @@ public class GameFlow implements Serializable {
     }
 
     public PlayerStatus getPlayerStatus() {
-        return playerService.getPlayer(blackJackTable).getPlayerStatus();
+        return playerService.getLoggedPlayerByTable(blackJackTable).getPlayerStatus();
     }
 
     public ResponseDto getResponseDto() {
         return new ResponseDto(blackJackTable);
-
     }
 
     public void setState(GameState state) {
