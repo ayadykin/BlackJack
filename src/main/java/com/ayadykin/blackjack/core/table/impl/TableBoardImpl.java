@@ -1,14 +1,18 @@
 package com.ayadykin.blackjack.core.table.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ayadykin.blackjack.core.table.Table;
 import com.ayadykin.blackjack.core.table.TableBoard;
+import com.ayadykin.blackjack.exceptions.BlackJackException;
 
 /**
  * Created by Yadykin Andrii Sep 9, 2016
@@ -17,16 +21,15 @@ import com.ayadykin.blackjack.core.table.TableBoard;
 
 @Named
 @ApplicationScoped
-public class TableBoardImpl implements Serializable, TableBoard{
+public class TableBoardImpl implements Serializable, TableBoard {
 
-    private List<Table> tables = new ArrayList<>();
+    private static final Logger logger = LoggerFactory.getLogger(TableBoard.class);
 
-    public List<Table> getTables() {
+    private Set<Table> tables = new HashSet<>();
+
+    @Override
+    public Set<Table> getTables() {
         return tables;
-    }
-
-    public void setTables(List<Table> tables) {
-        this.tables = tables;
     }
 
     @Override
@@ -34,4 +37,9 @@ public class TableBoardImpl implements Serializable, TableBoard{
         this.tables.add(tables);
     }
 
+    @Override
+    public Table getTable(long id) {
+        logger.debug("getTable size {}", tables.size());
+        return tables.stream().filter(t -> t.getId() == id).findFirst().orElseThrow(() -> new BlackJackException("Table not found"));
+    }
 }

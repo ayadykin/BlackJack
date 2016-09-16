@@ -17,7 +17,7 @@ import com.ayadykin.blackjack.utils.Constants;
 @Stateless
 public class AccountDaoImpl implements AccountDao {
 
-    @PersistenceContext(unitName = "blackjack")
+    @PersistenceContext
     private EntityManager em;
 
     @Override

@@ -1,6 +1,9 @@
 package com.ayadykin.blackjack.services;
 
-import com.ayadykin.blackjack.exceptions.BlackJackException;
+import java.util.concurrent.Callable;
+
+import com.ayadykin.blackjack.actions.GameActions;
+import com.ayadykin.blackjack.actions.PlayerStatus;
 import com.ayadykin.blackjack.rest.dto.PlayerActionDto;
 import com.ayadykin.blackjack.rest.dto.ResponseDto;
 
@@ -10,7 +13,12 @@ import com.ayadykin.blackjack.rest.dto.ResponseDto;
 
 
 public interface GameService {
-    ResponseDto gameAction(PlayerActionDto playerActionDto) throws BlackJackException;
+    ResponseDto gameAction(PlayerActionDto playerActionDto);
    
+    void gameType(GameActions gameActions);
+    
+    Callable<PlayerStatus> gameStatus() throws InterruptedException;
+    
+    Callable<ResponseDto> getCards() throws InterruptedException;
 }
 

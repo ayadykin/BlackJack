@@ -1,19 +1,35 @@
 package com.ayadykin.blackjack.core;
 
+import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
+import org.apache.openejb.jee.EjbJar;
+import org.apache.openejb.junit.ApplicationComposer;
+import org.apache.openejb.mockito.MockitoInjector;
+import org.apache.openejb.testing.Classes;
+import org.apache.openejb.testing.Module;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
 import com.ayadykin.blackjack.core.blackjack.BlackJackCore;
+import com.ayadykin.blackjack.core.blackjack.BlackJackRules;
 import com.ayadykin.blackjack.core.cards.Card;
 import com.ayadykin.blackjack.core.cards.Card.CardSuit;
 import com.ayadykin.blackjack.core.cards.Card.Nominal;
+import com.ayadykin.blackjack.core.deal.impl.BlackJackDealStrategy;
 import com.ayadykin.blackjack.core.model.Dealer;
 import com.ayadykin.blackjack.core.model.Player;
+import com.ayadykin.blackjack.core.state.GameState;
+import com.ayadykin.blackjack.core.state.impl.EndGameStateImpl;
+import com.ayadykin.blackjack.core.state.impl.InitGameStateImpl;
+import com.ayadykin.blackjack.core.state.impl.SetBetStateImpl;
+import com.ayadykin.blackjack.core.state.impl.StartGameStateImpl;
+import com.ayadykin.blackjack.core.table.Table;
+import com.ayadykin.blackjack.core.table.impl.BlackJackTableImpl;
 
 import junit.framework.TestCase;
 
@@ -21,6 +37,7 @@ import junit.framework.TestCase;
  * Created by Andrey Yadykin on 15 бер. 2016 р.
  */
 
+@RunWith(ApplicationComposer.class)
 public class BlackJackCoreTest extends TestCase {
     Card card = new Card(CardSuit.clubs, Nominal.ACE).setHidden(false);
     Card card1 = new Card(CardSuit.clubs, Nominal.SIX).setHidden(false);
@@ -33,13 +50,20 @@ public class BlackJackCoreTest extends TestCase {
     private Player player = new Player();
     private Dealer dealer = new Dealer();
 
+    @EJB
     private BlackJackCore blackJackCore;
-
+    
+    @Module
+    @Classes(cdi = true, value = {  BlackJackCore.class })
+    public EjbJar jar() {
+        return new EjbJar();
+    }
+    
     @Before
     public void setUp() throws NamingException {
 
-        Context context = EJBContainer.createEJBContainer().getContext();
-        blackJackCore = (BlackJackCore) context.lookup("java:global/BlackJack/" + BlackJackCore.class.getSimpleName());
+        //Context context = EJBContainer.createEJBContainer().getContext();
+        //blackJackCore = (BlackJackCore) context.lookup("java:global/BlackJack/" + BlackJackCore.class.getSimpleName());
 
         // Player set 18 point
         player.addCard(card);

@@ -1,24 +1,27 @@
 package com.ayadykin.blackjack.core;
 
 import java.io.Serializable;
+import java.util.Objects;
 
+import javax.ejb.EJB;
 import javax.ejb.Remove;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ayadykin.blackjack.actions.BlackJackActions;
 import com.ayadykin.blackjack.actions.BlackJackResponce;
+import com.ayadykin.blackjack.actions.PlayerStatus;
 import com.ayadykin.blackjack.core.state.GameState;
-import com.ayadykin.blackjack.core.state.qualifiers.EndGameState;
-import com.ayadykin.blackjack.core.state.qualifiers.InitGameState;
-import com.ayadykin.blackjack.core.state.qualifiers.NewGameState;
+import com.ayadykin.blackjack.core.state.qualifiers.SetBetState;
 import com.ayadykin.blackjack.core.state.qualifiers.StartGameState;
-import com.ayadykin.blackjack.core.table.Table;
-import com.ayadykin.blackjack.core.table.TableBoard;
-import com.ayadykin.blackjack.core.table.qualifiers.BlackJackTable;
+import com.ayadykin.blackjack.core.table.BlackJackTable;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 import com.ayadykin.blackjack.rest.dto.ResponseDto;
+import com.ayadykin.blackjack.services.PlayerService;
 
 /**
  * Created by Andrey Yadykin on 15 бер. 2016 р.
@@ -27,75 +30,79 @@ import com.ayadykin.blackjack.rest.dto.ResponseDto;
 @SessionScoped
 public class GameFlow implements Serializable {
 
-    @Inject
-    @BlackJackTable
-    private Table blackJackTable;
+    private static final Logger logger = LoggerFactory.getLogger(GameFlow.class);
 
-    @Inject
-    @InitGameState
-    private GameState initGameState;
+    private BlackJackTable blackJackTable;
 
     @Inject
     @StartGameState
     private GameState startGameState;
 
     @Inject
-    @EndGameState
-    private GameState endGameState;
-    
-    @Inject
-    private TableBoard tableBoard;
-    
-    @Inject
-    @NewGameState
+    @SetBetState
+    private GameState setBetState;
+
     private GameState state;
 
-    private BlackJackResponce blackJackResponce;
+    @EJB
+    private PlayerService playerService;
+
+    public void initGameFlow(BlackJackTable blackJackTable) {
+        this.blackJackTable = blackJackTable;
+        this.state = setBetState;
+    }
 
     public ResponseDto blackJackActions(BlackJackActions blackJackActions) throws BlackJackException {
 
+        // Validate user
+
+        if (Objects.isNull(blackJackTable)) {
+            throw new BlackJackException("Error choose game type");
+        }
+
         switch (blackJackActions) {
-        case NEW:
-            // New
-            tableBoard.addTable(blackJackTable);
-            blackJackResponce = BlackJackResponce.NEXT_STEP;
-            state.newGame(blackJackTable);
-            break;
-        case START:
-            // Init
-            blackJackResponce = BlackJackResponce.NEXT_STEP;
-            state.startGame(blackJackTable);
+
+        case BET:
+            playerService.getPlayer(blackJackTable).setBet(50);
+            state.setBet(50);
             break;
         case HIT:
             // HIT
-            blackJackResponce = state.hit(blackJackTable);
+            state.hit(playerService.getPlayer(blackJackTable), blackJackTable);
             break;
         case STAND:
             // Stand
-            blackJackResponce = state.stand(blackJackTable);
-            state.endGame(blackJackResponce, blackJackTable.getPlayer().getBet());
+            state.stand(playerService.getPlayer(blackJackTable), blackJackTable);
+            break;
+        case END:
+            // gameTimer.setTimer(this);
             break;
         default:
             break;
         }
 
-        return new ResponseDto(blackJackTable.getPlayers(), blackJackResponce);
+        return new ResponseDto(blackJackTable);
+    }
+
+    public PlayerStatus getPlayerStatus() {
+        return playerService.getPlayer(blackJackTable).getPlayerStatus();
+    }
+
+    public ResponseDto getResponseDto() {
+        return new ResponseDto(blackJackTable);
+
     }
 
     public void setState(GameState state) {
         this.state = state;
     }
 
-    public GameState getInitGameState() {
-        return initGameState;
+    public GameState getSetBetState() {
+        return setBetState;
     }
 
     public GameState getStartGameState() {
         return startGameState;
-    }
-
-    public GameState getEndGameState() {
-        return endGameState;
     }
 
     @Remove

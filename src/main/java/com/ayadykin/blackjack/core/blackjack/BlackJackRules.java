@@ -3,6 +3,8 @@ package com.ayadykin.blackjack.core.blackjack;
 import javax.ejb.Stateless;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
+import com.ayadykin.blackjack.core.model.Player;
+import com.ayadykin.blackjack.core.table.Table;
 
 /**
  * Created by Yadykin Andrii Sep 8, 2016
@@ -36,27 +38,28 @@ public class BlackJackRules {
         return false;
     }
 
-    public double countBet(BlackJackResponce blackJackResponce, double bet) {
+    public void countBet(Table table) {
 
-        switch (blackJackResponce) {
-        case PUSH:
-            bet = 0;
-            break;
-        case LOSE:
-        case YOU_BUST:
-            bet = -bet;
-            break;
-        case BLACK_JACK:
-            bet += bet * BLACK_JACK_COEFFICIENT;
-            break;
-        case WIN:
-        case DEALER_BUST:
-            // bet = +bet;
-            break;
-        default:
-            break;
+        for (Player player : table.getPlayers()) {
+            double bet = player.getBet();
+            switch (player.getPlayerResult()) {
+            case PUSH:
+                bet = 0;
+                break;
+            case LOSE:
+            case BUST:
+                bet = -bet;
+                break;
+            case BLACK_JACK:
+                bet += bet * BLACK_JACK_COEFFICIENT;
+                break;
+            case WIN:
+                // bet = +bet;
+                break;
+            default:
+                break;
+            }
+            player.setBet(bet);
         }
-        return bet;
-
     }
 }

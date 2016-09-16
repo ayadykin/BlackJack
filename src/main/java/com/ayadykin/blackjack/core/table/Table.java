@@ -12,10 +12,12 @@ import com.ayadykin.blackjack.core.model.Player;
 /**
  * Created by Andrey Yadykin on 22.02.2016.
  */
-@Local
+
 public interface Table {
    
-    void init(long id);
+    void init(Player player);
+    
+    Player getNextPlayer(Player player);
     
     long getId();
 
@@ -23,7 +25,7 @@ public interface Table {
 
     void newCardDeck();
 
-    Player getPlayer();
+    Player getPlayer(long id);
 
     List<Player> getPlayers();
 

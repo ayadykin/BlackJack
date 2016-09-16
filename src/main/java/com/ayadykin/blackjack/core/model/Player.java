@@ -1,30 +1,28 @@
 package com.ayadykin.blackjack.core.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.ayadykin.blackjack.core.cards.Card;
+import com.ayadykin.blackjack.actions.PlayerStatus;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016 ð.
  */
 
-public class Player implements Serializable{
+public class Player extends Dealer implements Serializable, GamePoints {
 
-    private long id;
+    private String name;
     private double cash;
     private double bet;
-    private List<Card> cards = new ArrayList<>();
-    private int points;
+    private PlayerStatus playerStatus;
 
     public Player() {
 
     }
 
-    public Player(long id, double cash) {
+    public Player(long id, String name, double cash) {
+        super(id);
+        this.name = name;
         this.cash = cash;
-        this.id = id;
     }
 
     public double getBet() {
@@ -35,16 +33,12 @@ public class Player implements Serializable{
         this.bet = bet;
     }
 
-    public boolean addCard(Card card) {
-        return cards.add(card);
+    public String getName() {
+        return name;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getCash() {
@@ -54,29 +48,40 @@ public class Player implements Serializable{
     public void setCash(double cash) {
         this.cash = cash;
     }
-    
+
     public void addBetToCash(double bet) {
         this.cash += bet;
     }
 
-    public List<Card> getCards() {
-        return cards;
+    public PlayerStatus getPlayerStatus() {
+        return playerStatus;
     }
 
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
+    public void setPlayerStatus(PlayerStatus playerStatus) {
+        this.playerStatus = playerStatus;
     }
 
-    public void clearPoints() {
-        points = 0;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(bet);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(cash);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((playerStatus == null) ? 0 : playerStatus.hashCode());
+        return result;
     }
 
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
+    @Override
+    public boolean equals(Object player) {
+        if (getId() == ((Dealer) player).getId()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

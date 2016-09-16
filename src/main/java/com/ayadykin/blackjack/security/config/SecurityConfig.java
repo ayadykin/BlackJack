@@ -17,7 +17,11 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
+import com.ayadykin.blackjack.security.RestAuthenticationEntryPoint;
+import com.ayadykin.blackjack.security.UserDetailsServiceImpl;
 import com.ayadykin.blackjack.security.filter.CsrfHeaderFilter;
+import com.ayadykin.blackjack.security.handlers.AccessDenied;
+import com.ayadykin.blackjack.security.handlers.LogoutSuccess;
 
 /**
  * Created by Yadykin Andrii May 12, 2016
@@ -35,11 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Inject
     private AccessDeniedHandler accessDenied;
     @Inject
-    private UserDetailsService userService;
-
+    private UserDetailsService userDetailsServiceImpl;
+    @Inject
+    private CsrfHeaderFilter csrfHeaderFilter;
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.eraseCredentials(true).userDetailsService(userService).passwordEncoder(new StandardPasswordEncoder());
+        auth.eraseCredentials(true).userDetailsService(userDetailsServiceImpl).passwordEncoder(new StandardPasswordEncoder());
     }
 
     @Override
@@ -49,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().csrfTokenRepository(csrfTokenRepository()).and().httpBasic()
                 .authenticationEntryPoint(restAuthenticationEntryPoint).and().exceptionHandling().accessDeniedHandler(accessDenied).and()
                 .logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccess).and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+                .addFilterAfter(csrfHeaderFilter, CsrfFilter.class);
     }
 
     private CsrfTokenRepository csrfTokenRepository() {

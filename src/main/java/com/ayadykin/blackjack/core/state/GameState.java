@@ -2,7 +2,8 @@ package com.ayadykin.blackjack.core.state;
 
 import javax.ejb.Local;
 
-import com.ayadykin.blackjack.actions.BlackJackResponce;
+import com.ayadykin.blackjack.core.model.Player;
+import com.ayadykin.blackjack.core.table.BlackJackTable;
 import com.ayadykin.blackjack.core.table.Table;
 
 /**
@@ -12,15 +13,11 @@ import com.ayadykin.blackjack.core.table.Table;
 
 @Local
 public interface GameState {
-    
-    void newGame(Table table);
-    
-    void startGame(Table table);
-    
-    BlackJackResponce hit(Table table);
-    
-    BlackJackResponce stand(Table table);
-    
-    double endGame(BlackJackResponce blackJackResponce, double bet);
-}
 
+    void setBet(double bet);
+
+    void hit(Player player, BlackJackTable table);
+
+    void stand(Player player, BlackJackTable table);
+
+}

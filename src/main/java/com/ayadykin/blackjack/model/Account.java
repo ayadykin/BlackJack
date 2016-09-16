@@ -63,4 +63,9 @@ public class Account {
         this.purseId = purseId;
     }
 
+    @Override
+    public String toString() {
+        return "Account [id=" + id + ", balance=" + balance + ", purseId=" + purseId + "]";
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.ayadykin.blackjack.security.dao.impl;
+package com.ayadykin.blackjack.security.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +12,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.ayadykin.blackjack.dao.UserDao;
 import com.ayadykin.blackjack.model.Role;
 import com.ayadykin.blackjack.model.User;
-import com.ayadykin.blackjack.security.dao.UserDao;
 
 /**
  * Created by Yadykin Andrii Sep 9, 2016
@@ -22,11 +22,10 @@ import com.ayadykin.blackjack.security.dao.UserDao;
  */
 
 @Named
-public class UserDaoImpl implements UserDao {
+public class UserJdbc {
 
     private static final Logger logger = Logger.getLogger(UserDao.class.getName());
 
-    @Override
     @Transactional
     public User findByEmail(String email) {
         logger.debug(" findByEmail ");
@@ -54,8 +53,10 @@ public class UserDaoImpl implements UserDao {
 
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();
+            user.setId(rs.getLong("id"));
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
+            user.setName(rs.getString("name"));
             user.setRole(new Role("user"));
             return user;
         }

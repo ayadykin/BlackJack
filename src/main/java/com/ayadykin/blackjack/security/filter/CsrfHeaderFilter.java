@@ -2,6 +2,7 @@ package com.ayadykin.blackjack.security.filter;
 
 import java.io.IOException;
 
+import javax.inject.Named;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -17,6 +18,7 @@ import org.springframework.web.util.WebUtils;
  *
  */
 
+@Named
 public class CsrfHeaderFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

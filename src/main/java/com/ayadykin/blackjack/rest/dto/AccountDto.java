@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 public class AccountDto implements Serializable {
 
+    private long id;
     private String email;
     private String firstName;
     private String lastName;
@@ -18,10 +19,18 @@ public class AccountDto implements Serializable {
 
     }
 
-    public AccountDto(String email, String firstName) {
+    public AccountDto(long id, String email, String firstName) {
+        this.id = id;
         this.email = email;
         this.firstName = firstName;
+    }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -58,7 +67,8 @@ public class AccountDto implements Serializable {
 
     @Override
     public String toString() {
-        return "AccountDto [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", locale=" + locale + "]";
+        return "AccountDto [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", locale=" + locale
+                + "]";
     }
 
 }

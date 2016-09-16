@@ -8,8 +8,9 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import com.ayadykin.blackjack.rest.BlackJackRestService;
+import com.ayadykin.blackjack.rest.GameRestService;
 import com.ayadykin.blackjack.rest.Signin;
-import com.ayadykin.blackjack.rest.providers.AuthenticationFilter;
+import com.ayadykin.blackjack.rest.Signup;
 import com.ayadykin.blackjack.rest.providers.BlackJackProvider;
 import com.owlike.genson.ext.jaxrs.GensonJaxRSFeature;
 
@@ -30,11 +31,13 @@ public class ApplicationConfig extends Application {
         HashSet<Class<?>> c = new HashSet<>();
 
         c.add(BlackJackRestService.class);
+        c.add(GameRestService.class);
         c.add(Signin.class);
+        c.add(Signup.class);
         c.add(GensonJaxRSFeature.class);
         c.add(BlackJackProvider.class);
-        //c.add(AuthenticationFilter.class);
-        
+        // c.add(AuthenticationFilter.class);
+
         classes = Collections.unmodifiableSet(c);
     }
 

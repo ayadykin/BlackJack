@@ -1,18 +1,21 @@
 package com.ayadykin.blackjack.core.state.impl;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
-import com.ayadykin.blackjack.actions.BlackJackResponce;
+import com.ayadykin.blackjack.actions.PlayerStatus;
 import com.ayadykin.blackjack.core.GameFlow;
 import com.ayadykin.blackjack.core.blackjack.BlackJackCore;
 import com.ayadykin.blackjack.core.model.Dealer;
+import com.ayadykin.blackjack.core.model.Player;
 import com.ayadykin.blackjack.core.state.GameState;
 import com.ayadykin.blackjack.core.state.qualifiers.StartGameState;
-import com.ayadykin.blackjack.core.table.Table;
+import com.ayadykin.blackjack.core.table.BlackJackTable;
+import com.ayadykin.blackjack.core.timer.EndGameTimer;
 import com.ayadykin.blackjack.exceptions.BlackJackException;
 
 /**
@@ -28,11 +31,14 @@ public class StartGameStateImpl implements GameState, Serializable {
     private transient BlackJackCore blackJackCore;
 
     private GameFlow gameFlow;
-    
-    public StartGameStateImpl(){
-    	
+
+    @EJB
+    private EndGameTimer endGameTimer;
+
+    public StartGameStateImpl() {
+
     }
-    		
+
     /**
      * Inject game flow for change game state
      * 
@@ -44,49 +50,52 @@ public class StartGameStateImpl implements GameState, Serializable {
     }
 
     @Override
-    public void newGame(Table table) {
-        throw new BlackJackException("Error you can't call newGame() method, startGameState can call hit() or stand methods!");
+    public void setBet(double bet) {
+        throw new BlackJackException("Error you can't call setBet() method, startGameState can call hit() or stand methods!");
 
     }
 
     @Override
-    public void startGame(Table table) {
-        throw new BlackJackException("Error you can't call initGame() method, startGameState can call hit() or stand methods!");
-    }
-
-    @Override
-    public BlackJackResponce hit(Table table) {
-        BlackJackResponce blackJackResponce = blackJackCore.playerStep(table.getPlayer(), table.getCard());
-        if (blackJackResponce == BlackJackResponce.YOU_BUST) {
-            gameFlow.setState(gameFlow.getEndGameState());
+    public void hit(Player player, BlackJackTable table) {
+        if (!blackJackCore.playerStep(player, table.getCard())) {
+            player.setPlayerStatus(PlayerStatus.WAIT);
+            // next player or end
+            Player nextPlayer = table.getNextPlayer(player);
+            if (Objects.nonNull(nextPlayer)) {
+                nextPlayer.setPlayerStatus(PlayerStatus.STEP);
+            } else {
+                dealerStep(table);
+            }
         }
-
-        return blackJackResponce;
-
     }
 
     @Override
-    public BlackJackResponce stand(Table table) {
-        BlackJackResponce blackJackResponce;
+    public void stand(Player player, BlackJackTable table) {
+
+        // Status
+        Player nextPlayer = table.getNextPlayer(player);
+        player.setPlayerStatus(PlayerStatus.WAIT);
+
+        if (Objects.nonNull(nextPlayer)) {
+            // next player
+            nextPlayer.setPlayerStatus(PlayerStatus.STEP);
+        } else {
+            // dealer step
+            dealerStep(table);
+
+            // Game result
+            blackJackCore.getGameResult(table);
+            // Count bet
+            blackJackCore.countBet(table);
+        }
+    }
+
+    private void dealerStep(BlackJackTable table) {
         Dealer dealer = table.getDealer();
-        do {
-            blackJackResponce = blackJackCore.dealerStep(dealer, table.getCard());
-        } while (blackJackResponce == BlackJackResponce.NEXT_STEP);
-
-        gameFlow.setState(gameFlow.getEndGameState());
-
-        if (blackJackResponce != BlackJackResponce.DEALER_BUST) {
-            int dealerPoints = dealer.getPoints();
-            int playerPoints = table.getPlayer().getPoints();
-            return blackJackCore.getGameResult(playerPoints, dealerPoints);
+        // dealer step
+        while (blackJackCore.dealerStep(dealer, table.getCard())) {
         }
-
-        return blackJackResponce;
-    }
-
-    @Override
-    public double endGame(BlackJackResponce blackJackResponce, double bet) {
-        throw new BlackJackException("Error you can't call endGame() method, startGameState can call hit() or stand methods!");
+        endGameTimer.setEndGameTimer(table);
     }
 
 }

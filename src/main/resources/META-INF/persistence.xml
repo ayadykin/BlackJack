@@ -6,19 +6,19 @@
 
 	<persistence-unit name="blackjack" transaction-type="JTA">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<!--jta-data-source>jdbc/blackjack</jta-data-source-->
+		<jta-data-source>jdbc/black_jack</jta-data-source>
 
 		<class>com.ayadykin.blackjack.core.model.Account</class>
 		<class>com.ayadykin.blackjack.core.model.User</class>
 		<class>com.ayadykin.blackjack.core.model.Role</class>
 		
 		<properties>
-		    <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+		    <!--property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/black_jack" />
             <property name="javax.persistence.jdbc.user" value="postgres" />
-            <property name="javax.persistence.jdbc.password" value="pgpass" />
+            <property name="javax.persistence.jdbc.password" value="pgpass" /-->
 			
-            <property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+            <property name="eclipselink.ddl-generation" value="none" />
 
 			<property name="eclipselink.logging.level" value="FINE" />
 			<property name="eclipselink.logging.parameters" value="true" />

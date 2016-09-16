@@ -40,14 +40,11 @@ public class User implements Serializable, UserDetails {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     private Role role;
-    @Transient
-    private Player player;
 
     @Transient
     private List<GrantedAuthority> authorities = null;
 
     public User() {
-        // player = new Player(id, account.getBalance());
     }
 
     public User(String email, String password, Role role) {
@@ -97,14 +94,6 @@ public class User implements Serializable, UserDetails {
         this.name = name;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -149,7 +138,9 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public String toString() {
-        return "User [email=" + email + ", role=" + role + "]";
+        return "User [id=" + id + ", account=" + account + ", email=" + email + ", password=" + password + ", name=" + name + "]";
     }
+
+    
 
 }

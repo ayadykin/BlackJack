@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.ayadykin.blackjack.model.Role;
 import com.ayadykin.blackjack.model.User;
-import com.ayadykin.blackjack.security.dao.UserDao;
+import com.ayadykin.blackjack.security.jdbc.UserJdbc;
 
 /**
  * Created by Yadykin Andrii Sep 9, 2016
@@ -22,12 +22,12 @@ import com.ayadykin.blackjack.security.dao.UserDao;
  */
 
 @Named
-public class UserService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private static final Logger logger = Logger.getLogger(UserService.class.getName());
+    private static final Logger logger = Logger.getLogger(UserDetailsServiceImpl.class.getName());
 
     @Inject
-    private UserDao userDao;
+    private UserJdbc userJdbc;
 
     @Override
     @Transactional
@@ -35,10 +35,7 @@ public class UserService implements UserDetailsService {
         logger.debug("-------- : " + email);
         User user = null;
         try {
-            if(Objects.isNull(userDao)){
-                logger.debug("userDao -------- null: ");
-            }
-             user = userDao.findByEmail(email);
+            user = userJdbc.findByEmail(email);
             logger.debug("userDao -------- : " + user.getEmail());
             if (Objects.isNull(user)) {
                 throw new UsernameNotFoundException("user not found");

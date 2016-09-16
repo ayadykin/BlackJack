@@ -6,21 +6,24 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.ayadykin.blackjack.actions.BlackJackResponce;
+import com.ayadykin.blackjack.actions.PlayerResult;
 import com.ayadykin.blackjack.core.cards.Card;
 import com.ayadykin.blackjack.core.model.Dealer;
+import com.ayadykin.blackjack.core.model.GamePoints;
 import com.ayadykin.blackjack.core.model.Player;
+import com.ayadykin.blackjack.core.table.Table;
 
 /**
  * Created by Andrey Yadykin on 22.02.2016.
  */
 
 @Stateless
-public class BlackJackCore implements Serializable{
+public class BlackJackCore implements Serializable {
 
     @EJB
     private BlackJackRules blackJackRules;
 
-    public BlackJackResponce checkBlackJack(Player player, Dealer dealer) {
+    public void checkBlackJack(Player player, Player dealer) {
 
         int playerPoints = countPoints(player);
         int dealerPoints = countPoints(dealer);
@@ -28,62 +31,68 @@ public class BlackJackCore implements Serializable{
             dealerOpenHiddenCard(dealer);
             dealerPoints = countPoints(dealer);
             if (blackJackRules.isBlackJack(dealerPoints)) {
-                return BlackJackResponce.PUSH;
+                //return BlackJackResponce.NEXT_STEP;
             } else {
-                return BlackJackResponce.BLACK_JACK;
+                //return BlackJackResponce.NEXT_STEP;
             }
         }
-        return BlackJackResponce.NEXT_STEP;
+        //return BlackJackResponce.NEXT_STEP;
 
     }
 
-    public BlackJackResponce playerStep(Player player, Card card) {
+    public boolean playerStep(Player player, Card card) {
         player.addCard(card);
         int points = countPoints(player);
         if (blackJackRules.isBust(points)) {
-            return BlackJackResponce.YOU_BUST;
+            player.setPlayerResult(PlayerResult.BUST);
+            return false;
         }
-        return BlackJackResponce.NEXT_STEP;
+        return true;
     }
 
-    public BlackJackResponce dealerStep(Dealer dealer, Card card) {
+    public boolean dealerStep(Dealer dealer, Card card) {
         dealerOpenHiddenCard(dealer);
         int points = countPoints(dealer);
         if (blackJackRules.dealerStep(points)) {
             dealer.addCard(card);
             points = countPoints(dealer);
             if (blackJackRules.isBust(points)) {
-                return BlackJackResponce.DEALER_BUST;
+                dealer.setPlayerResult(PlayerResult.BUST);
+                return false;
             } else if (blackJackRules.dealerStep(points)) {
-                return BlackJackResponce.NEXT_STEP;
+                return true;
             } else {
-                return BlackJackResponce.DEALER_STAND;
+                return false;
             }
         } else {
-            return BlackJackResponce.DEALER_STAND;
+            return false;
         }
     }
 
-    public BlackJackResponce getGameResult(int playerPoints, int dealerPoints) {
+    public void getGameResult(Table table) {
+        int dealerPoints = table.getDealer().getPoints();
 
-        if (playerPoints == dealerPoints) {
-            return BlackJackResponce.PUSH;
-        } else if (playerPoints > dealerPoints) {
-            return BlackJackResponce.WIN;
-        } else {
-            return BlackJackResponce.LOSE;
+        for (Player player : table.getPlayers()) {
+            int playerPoints = player.getPoints();
+            if (playerPoints == dealerPoints) {
+                player.setPlayerResult(PlayerResult.PUSH);
+            } else if (playerPoints > dealerPoints) {
+                player.setPlayerResult(PlayerResult.WIN);
+            } else {
+                player.setPlayerResult(PlayerResult.LOSE);
+            }
         }
     }
-    
-    public double countBet(BlackJackResponce blackJackResponce, double bet) {
-        return blackJackRules.countBet(blackJackResponce, bet);
+
+    public void countBet(Table table) {
+        blackJackRules.countBet(table);
     }
 
     private void dealerOpenHiddenCard(Dealer dealer) {
         dealer.getCards().get(1).setHidden(false);
     }
 
-    private int countPoints(Player player) {
+    public int countPoints(GamePoints player) {
         int points = 0;
 
         for (Card card : player.getCards()) {
