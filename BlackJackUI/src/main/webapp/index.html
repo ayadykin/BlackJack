@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/actions.js"></script>
+<script src="js/async.js"></script>
+<title></title>
+</head>
+<body>
+
+    <BUTTON onclick="get()">GET</BUTTON>
+    <BUTTON onclick="game('NEW')">NEW</BUTTON>   
+    <BUTTON onclick="game('CONNECT')">Connect</BUTTON>
+     <br />
+    <BUTTON onclick="action('BET')">Bet</BUTTON>
+    <BUTTON onclick="action('HIT')">HIT</BUTTON>
+    <BUTTON onclick="action('STAND')">STAND</BUTTON>
+    <br />
+    <BUTTON onclick="signin1()">Signin1</BUTTON>
+    <br />
+    <BUTTON onclick="signin2()">Signin2</BUTTON>
+    <br />
+    <BUTTON onclick="logout()">logout</BUTTON>
+
+    <TABLE id="table" border="2" cellpadding="10px">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Points</th>
+                <th>Cash</th>
+                <th>Bet</th>
+                <th>Cards</th>
+                <th>Resp</th>
+                <th>Player Status</th>
+                <th>Player Result</th>
+            </tr>
+        </thead>
+        <TBODY id="body">
+            <tr id="row" style='display:none'>
+                <td id="name"></td>
+                <td id="points"></td>
+                <td id="cash"></td>
+                <td id="bet"></td>
+                <td id="card"></td>
+                <td id="resp"></td>
+                <td id="status"></td>
+                <td id="result"></td>
+            </tr>
+        </TBODY>
+    </TABLE>
+Counter : <DIV id="counter"></DIV>
+</body>
+</html>
