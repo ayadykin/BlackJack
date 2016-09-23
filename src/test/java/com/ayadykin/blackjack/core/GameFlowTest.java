@@ -14,21 +14,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
-import com.ayadykin.blackjack.actions.BlackJackActions;
-import com.ayadykin.blackjack.core.blackjack.BlackJackCore;
-import com.ayadykin.blackjack.core.blackjack.BlackJackRules;
-import com.ayadykin.blackjack.core.deal.impl.BlackJackDealStrategy;
-import com.ayadykin.blackjack.core.state.GameState;
-import com.ayadykin.blackjack.core.state.impl.EndGameStateImpl;
-import com.ayadykin.blackjack.core.state.impl.InitGameStateImpl;
-import com.ayadykin.blackjack.core.state.impl.SetBetStateImpl;
-import com.ayadykin.blackjack.core.state.impl.StartGameStateImpl;
-import com.ayadykin.blackjack.core.table.Table;
-import com.ayadykin.blackjack.core.table.impl.BlackJackTableImpl;
-import com.ayadykin.blackjack.exceptions.BlackJackException;
-import com.ayadykin.blackjack.model.User;
-import com.ayadykin.blackjack.rest.dto.ResponseDto;
-import com.ayadykin.blackjack.services.UserService;
+import com.ayadykin.card.game.core.state.impl.EndGameStateImpl;
+import com.ayadykin.card.game.core.state.impl.InitGameStateImpl;
+import com.ayadykin.game.blackjack.actions.BlackJackActions;
+import com.ayadykin.game.blackjack.core.BlackJackCore;
+import com.ayadykin.game.blackjack.core.BlackJackRules;
+import com.ayadykin.game.blackjack.exceptions.BlackJackException;
+import com.ayadykin.game.core.GameFlow;
+import com.ayadykin.game.core.deal.impl.BlackJackDealStrategy;
+import com.ayadykin.game.core.state.GameState;
+import com.ayadykin.game.core.state.impl.SetBetStateImpl;
+import com.ayadykin.game.core.state.impl.StartGameStateImpl;
+import com.ayadykin.game.core.table.Table;
+import com.ayadykin.game.core.table.impl.BlackJackTableImpl;
+import com.ayadykin.game.domain.model.User;
+import com.ayadykin.game.rest.dto.ResponseDto;
+import com.ayadykin.game.services.UserService;
 
 /**
  * Created by Yadykin Andrii Sep 8, 2016

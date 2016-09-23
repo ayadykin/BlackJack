@@ -14,11 +14,7 @@ import javax.ws.rs.core.UriBuilder;
 //import org.codehaus.jettison.json.JSONObject;
 import org.junit.Test;
 
-import com.ayadykin.blackjack.rest.dto.ResponseDto;
-//import com.sun.jersey.api.client.WebResource;
-//import com.sun.jersey.test.framework.AppDescriptor;
-//import com.sun.jersey.test.framework.JerseyTest;
-//import com.sun.jersey.test.framework.WebAppDescriptor;
+import com.ayadykin.game.rest.dto.ResponseDto;
 
 /**
  * Created by Andrey Yadykin on 15 бер. 2016 р.

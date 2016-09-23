@@ -53,15 +53,12 @@ function action(action) {
 	    'X-XSRF-TOKEN' : $.cookie("XSRF-TOKEN")
 	},
 	success : function(data) {
-	    if (action === 'BET') {
-		getCards();
-	    }
+	    $('#gameStatus').html(data.gameStatus);
 	    $.each(data.players, function(i, player) {
-		if (player.id === playerId && player.playerStatus == 'WAIT') {
-		     getStatus();
+		if (player.id === playerId && player.playerStatus === 'WAIT') {
+		    //getStatus();
 		}
-
-		$('#row_' + player.id + ' #resp').html(data.blackJackResponce);
+		
 		fillTable(player);
 	    });
 	    fillTable(data.dealer);
@@ -89,21 +86,6 @@ function fillTable(player) {
     $('#row_' + player.id + ' #card').html(cards);
 }
 
-function game(action) {
-    countDown();
-    $.ajax({
-	type : 'POST',
-	contentType : 'application/json',
-	url : '/BlackJack/game',
-	data : JSON.stringify({
-	    gameActions : action
-	}),
-	headers : {
-	    'X-XSRF-TOKEN' : $.cookie("XSRF-TOKEN")
-	}
-    });
-}
-
 function logout() {
     stopGetStatus();
 
@@ -117,10 +99,23 @@ function logout() {
     });
 }
 
+function leave() {
+    stopGetStatus();
+
+    $.ajax({
+	type : 'GET',
+	dataType : 'json',
+	url : '/BlackJack/blackjack/leave',
+	headers : {
+	    'X-XSRF-TOKEN' : $.cookie("XSRF-TOKEN")
+	}
+    });
+}
+
 function countDown() {
 
     var i = 10;
-    myVar = setInterval(function() {
+    var myVar = setInterval(function() {
 	$('#counter').text(--i);
 	if (i < 1) {
 	    clearInterval(myVar);

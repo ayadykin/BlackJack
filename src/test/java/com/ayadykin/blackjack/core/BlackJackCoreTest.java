@@ -14,22 +14,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.ayadykin.blackjack.actions.BlackJackResponce;
-import com.ayadykin.blackjack.core.blackjack.BlackJackCore;
-import com.ayadykin.blackjack.core.blackjack.BlackJackRules;
-import com.ayadykin.blackjack.core.cards.Card;
-import com.ayadykin.blackjack.core.cards.Card.CardSuit;
-import com.ayadykin.blackjack.core.cards.Card.Nominal;
-import com.ayadykin.blackjack.core.deal.impl.BlackJackDealStrategy;
-import com.ayadykin.blackjack.core.model.Dealer;
-import com.ayadykin.blackjack.core.model.Player;
-import com.ayadykin.blackjack.core.state.GameState;
-import com.ayadykin.blackjack.core.state.impl.EndGameStateImpl;
-import com.ayadykin.blackjack.core.state.impl.InitGameStateImpl;
-import com.ayadykin.blackjack.core.state.impl.SetBetStateImpl;
-import com.ayadykin.blackjack.core.state.impl.StartGameStateImpl;
-import com.ayadykin.blackjack.core.table.Table;
-import com.ayadykin.blackjack.core.table.impl.BlackJackTableImpl;
+import com.ayadykin.card.game.core.state.impl.EndGameStateImpl;
+import com.ayadykin.card.game.core.state.impl.InitGameStateImpl;
+import com.ayadykin.game.blackjack.core.BlackJackCore;
+import com.ayadykin.game.blackjack.core.BlackJackRules;
+import com.ayadykin.game.core.actions.GameStatus;
+import com.ayadykin.game.core.cards.Card;
+import com.ayadykin.game.core.cards.Card.CardSuit;
+import com.ayadykin.game.core.cards.Card.Nominal;
+import com.ayadykin.game.core.deal.impl.BlackJackDealStrategy;
+import com.ayadykin.game.core.model.Dealer;
+import com.ayadykin.game.core.model.Player;
+import com.ayadykin.game.core.state.GameState;
+import com.ayadykin.game.core.state.impl.SetBetStateImpl;
+import com.ayadykin.game.core.state.impl.StartGameStateImpl;
+import com.ayadykin.game.core.table.Table;
+import com.ayadykin.game.core.table.impl.BlackJackTableImpl;
 
 import junit.framework.TestCase;
 
@@ -77,55 +77,55 @@ public class BlackJackCoreTest extends TestCase {
     @Test
     public void testCheckBlackJack() {
 
-        assertEquals(BlackJackResponce.NEXT_STEP, blackJackCore.checkBlackJack(player, dealer));
+        assertEquals(GameStatus.NEXT_STEP, blackJackCore.checkBlackJack(player, dealer));
         assertEquals(18, player.getPoints());
         //assertEquals(14, dealer.getPoints());
         
         blackJackCore.playerStep(player, card3);
-        assertEquals(BlackJackResponce.BLACK_JACK, blackJackCore.checkBlackJack(player, dealer));
+        assertEquals(GameStatus.BLACK_JACK, blackJackCore.checkBlackJack(player, dealer));
         assertEquals(21, player.getPoints());
         assertEquals(14, dealer.getPoints());
         
         blackJackCore.playerStep(dealer, card4);
-        assertEquals(BlackJackResponce.PUSH, blackJackCore.checkBlackJack(player, dealer));
+        assertEquals(GameStatus.PUSH, blackJackCore.checkBlackJack(player, dealer));
         assertEquals(21, player.getPoints());
         assertEquals(21, dealer.getPoints());
     }
 
     @Test
     public void testCheckPlayerStep() {
-        assertEquals(BlackJackResponce.NEXT_STEP, blackJackCore.playerStep(player, card6));
+        assertEquals(GameStatus.NEXT_STEP, blackJackCore.playerStep(player, card6));
         assertEquals(20, player.getPoints());
-        assertEquals(BlackJackResponce.YOU_BUST, blackJackCore.playerStep(player, card6));
+        assertEquals(GameStatus.YOU_BUST, blackJackCore.playerStep(player, card6));
         assertEquals(22, player.getPoints());
 
     }
 
     @Test
     public void testCheckDealerStep() {       
-        assertEquals(BlackJackResponce.NEXT_STEP, blackJackCore.dealerStep(dealer, card6));
+        assertEquals(GameStatus.NEXT_STEP, blackJackCore.dealerStep(dealer, card6));
         assertEquals(16, dealer.getPoints());
-        assertEquals(BlackJackResponce.DEALER_STAND, blackJackCore.dealerStep(dealer, card6));
+        assertEquals(GameStatus.DEALER_STAND, blackJackCore.dealerStep(dealer, card6));
         assertEquals(18, dealer.getPoints());
     }
     
     @Test
     public void testCheckDealerStand() {  
         dealer.addCard(card1);
-        assertEquals(BlackJackResponce.DEALER_STAND, blackJackCore.dealerStep(dealer, card5));
+        assertEquals(GameStatus.DEALER_STAND, blackJackCore.dealerStep(dealer, card5));
         assertEquals(20, dealer.getPoints());
     }
     
     @Test
     public void testCheckDealerBust() {       
-        assertEquals(BlackJackResponce.DEALER_BUST, blackJackCore.dealerStep(dealer, card5));
+        assertEquals(GameStatus.DEALER_BUST, blackJackCore.dealerStep(dealer, card5));
         assertEquals(24, dealer.getPoints());
     }
 
     @Test
     public void testGetGameResult() {
-        assertEquals(BlackJackResponce.PUSH, blackJackCore.getGameResult(20, 20));
-        assertEquals(BlackJackResponce.WIN, blackJackCore.getGameResult(19, 18));
-        assertEquals(BlackJackResponce.LOSE, blackJackCore.getGameResult(19, 20));
+        assertEquals(GameStatus.PUSH, blackJackCore.getGameResult(20, 20));
+        assertEquals(GameStatus.WIN, blackJackCore.getGameResult(19, 18));
+        assertEquals(GameStatus.LOSE, blackJackCore.getGameResult(19, 20));
     }
 }
