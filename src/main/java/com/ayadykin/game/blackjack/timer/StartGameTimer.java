@@ -1,7 +1,6 @@
 package com.ayadykin.game.blackjack.timer;
 
 import javax.annotation.Resource;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
@@ -27,8 +26,6 @@ public class StartGameTimer {
 
     @Resource
     private TimerService timerService;
-    @EJB
-    private StartGame startGame;
 
     public void setStartGameTimer(Table table) {
         logger.debug(" setStartGameTimer ");
@@ -48,7 +45,11 @@ public class StartGameTimer {
             }
         }
         if (bet) {
-            startGame.startGame(table);
+        	 // Create new card deck
+            table.getDealer().startGame(table.getPlayers());
+
+            table.setGameStatus(GameStatus.GAME_START);
+            
             timer.cancel();
             logger.debug(" timeoutTimerService canceled");
         }

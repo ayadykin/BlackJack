@@ -1,10 +1,10 @@
 package com.ayadykin.game.blackjack.core;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 
-import com.ayadykin.game.core.actions.GameStatus;
 import com.ayadykin.game.core.model.Player;
-import com.ayadykin.game.core.table.Table;
 
 /**
  * Created by Yadykin Andrii Sep 8, 2016
@@ -38,9 +38,9 @@ public class BlackJackRules {
         return false;
     }
 
-    public void countBet(Table table) {
+    public void countBet(List<Player> players) {
 
-        for (Player player : table.getPlayers()) {
+        for (Player player : players) {
             double bet = player.getBet();
             switch (player.getPlayerResult()) {
             case PUSH:

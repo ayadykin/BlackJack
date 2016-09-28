@@ -30,9 +30,9 @@ import com.ayadykin.game.services.PlayerService;
 
 @Named
 @SessionScoped
-public class BlackJackGameFlow implements Serializable {
+public class BlackJackPlayerFlow implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(BlackJackGameFlow.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlackJackPlayerFlow.class);
 
     @EJB
     private PlayerService playerService;

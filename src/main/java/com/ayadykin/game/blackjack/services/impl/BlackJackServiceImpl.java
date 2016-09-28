@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ayadykin.game.blackjack.core.BlackJackGameFlow;
+import com.ayadykin.game.blackjack.core.BlackJackPlayerFlow;
 import com.ayadykin.game.blackjack.services.BlackJackService;
 import com.ayadykin.game.blackjack.timer.StartGameTimer;
 import com.ayadykin.game.core.model.Player;
@@ -28,7 +28,7 @@ public class BlackJackServiceImpl implements BlackJackService {
     private static final Logger logger = LoggerFactory.getLogger(BlackJackService.class);
 
     @Inject
-    private BlackJackGameFlow blackJackGameFlow;
+    private BlackJackPlayerFlow blackJackPlayerFlow;
     @EJB
     private ITableBoardService tableBoardService;
     @EJB
@@ -39,13 +39,13 @@ public class BlackJackServiceImpl implements BlackJackService {
         logger.debug(" init ");
 
         // Init game flow
-        blackJackGameFlow.initBlackJackGameFlow(table, player);
+        blackJackPlayerFlow.initBlackJackGameFlow(table, player);
         gameTimer.setStartGameTimer((BlackJackTable) table);
     }
 
     @Override
     public ResponseDto gameAction(PlayerActionDto playerActionDto) {      
-        return blackJackGameFlow.gameAction(playerActionDto.getBlackJackAction());
+        return blackJackPlayerFlow.gameAction(playerActionDto.getBlackJackAction());
     }
     
     @Override
@@ -60,11 +60,11 @@ public class BlackJackServiceImpl implements BlackJackService {
     @Override
     public StatusDto gameStatus() throws InterruptedException {
         Thread.sleep(5000);
-        return blackJackGameFlow.getStatus();
+        return blackJackPlayerFlow.getStatus();
     }
 
     @Override
     public ResponseDto getCards() throws InterruptedException {
-        return blackJackGameFlow.getResponseDto();
+        return blackJackPlayerFlow.getResponseDto();
     }
 }

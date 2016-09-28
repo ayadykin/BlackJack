@@ -28,12 +28,12 @@ public class BlackJackDealStrategy implements DealCards {
     private static final int DEAL_CARDS = 2;
 
     @Override
-    public void dealCards(List<Player> players, Dealer dealer, CardDeck cardDeck) {
+    public void dealCards(List<Player> players, Dealer dealer) {
         logger.debug(" dealCards ");
         int size = players.size();
         for (int i = 0; i < DEAL_CARDS; i++) {
             for (int j = 0; j < size + 1; j++) {
-                Card card = cardDeck.getCard().setHidden(false);
+                Card card = dealer.getCard().setHidden(false);
                 if (j == size) {
                     if(i == 1){
                         card.setHidden(true);

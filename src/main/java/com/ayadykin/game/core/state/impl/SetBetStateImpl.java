@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
-import com.ayadykin.game.blackjack.core.BlackJackGameFlow;
+import com.ayadykin.game.blackjack.core.BlackJackPlayerFlow;
 import com.ayadykin.game.blackjack.exceptions.BlackJackException;
 import com.ayadykin.game.core.model.Player;
 import com.ayadykin.game.core.state.GameState;
@@ -21,14 +21,14 @@ import com.ayadykin.game.core.table.BlackJackTable;
 @SessionScoped
 public class SetBetStateImpl implements GameState, Serializable {
 
-    private BlackJackGameFlow gameFlow;
+    private BlackJackPlayerFlow gameFlow;
 
     public SetBetStateImpl() {
 
     }
 
     @Inject
-    public SetBetStateImpl(BlackJackGameFlow gameFlow) {
+    public SetBetStateImpl(BlackJackPlayerFlow gameFlow) {
         this.gameFlow = gameFlow;
     }
 
